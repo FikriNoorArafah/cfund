@@ -8,14 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function show(){
+    public function show()
+    {
         return view('auth.login');
     }
 
-    public function login(LoginRequest $request){
+    public function login(LoginRequest $request)
+    {
         $credentials = $request->getCredentials();
 
-        if(!Auth::validate($credentials)):
+        if (!Auth::validate($credentials)) :
             return redirect()->to('login')
                 ->withErrors(trans('auth.failed'));
         endif;
@@ -27,7 +29,8 @@ class LoginController extends Controller
         return $this->authenticated($request, $user);
     }
 
-    protected function authenticated(request $request, $user){
-        return redirect()->intended();
+    protected function authenticated(request $request, $user)
+    {
+        return redirect()->intended()->with('success', "Kamu berhasil login");
     }
 }

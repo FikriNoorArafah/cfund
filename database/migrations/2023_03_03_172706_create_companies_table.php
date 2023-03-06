@@ -12,15 +12,27 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->id('id_companies');
-            $table->string('name');
+            $table->id('company_id');
+            $table->string('name')->unique();
             $table->string('email')->unique();
+            $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('address');
             $table->string('detail');
+            $table->text('url_icon');
             $table->timestamps();
         });
+
+        DB::table('companies')->insert([
+            'name' => 'Facebook',
+            'email' => 'Facebook@careerfund.com',
+            'username' => 'Facebook',
+            'password' => bcrypt('Facebook'),
+            'address' => 'usa',
+            'detail' => 'by meta',
+            'url_icon' => 'https://oduvbujtzradsetbgtxm.supabase.co/storage/v1/object/sign/src/Logo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJzcmMvTG9nby5wbmciLCJpYXQiOjE2NzgwMzUzMTMsImV4cCI6MTcwOTU3MTMxM30.n_ccn8nTcp8HA4ORIewNyk1yr4huHsyfbtyivLpO3KM&t=2023-03-05T16%3A55%3A14.087Z',
+        ]);
     }
 
     /**

@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('interests', function (Blueprint $table) {
-            $table->id('interest_id');
-            $table->string('name');
-            $table->string('desc');
+        Schema::create('carousel', function (Blueprint $table) {
+            $table->id('carousel_id');
+            $table->text('url_image');
+            $table->string('meta_image')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('interests');
+        Schema::dropIfExists('carousel');
     }
 };

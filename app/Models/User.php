@@ -20,14 +20,14 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'telephone',
         'username',
+        'url_icon',
         'password',
     ];
 
-    public function setIdAttribute($value){
-        $this->attributes['id'] = bcrypt($value);
-    }
-    public function setPasswordAttribute($value){
+    public function setPasswordAttribute($value)
+    {
         $this->attributes['password'] = bcrypt($value);
     }
 

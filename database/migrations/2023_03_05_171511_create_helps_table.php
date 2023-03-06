@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('interests', function (Blueprint $table) {
-            $table->id('interest_id');
-            $table->string('name');
-            $table->string('desc');
+        Schema::create('helps', function (Blueprint $table) {
+            $table->id('help_id');
+            $table->string('question');
+            $table->text('answer');
             $table->timestamps();
         });
+
+        DB::table('helps')->insert([
+            'question' => 'Question Example?',
+            'answer' => 'Answer Example',
+        ]);
     }
 
     /**
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('interests');
+        Schema::dropIfExists('helps');
     }
 };

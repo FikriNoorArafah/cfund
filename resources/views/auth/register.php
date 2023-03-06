@@ -16,16 +16,22 @@
 
             <h1>Register</h1>
 
+            <input type="text" name="name" value="<?php echo e(old('name')); ?>" placeholder="Your Name" required="required" autofocus>
+            <label>Email address</label>
+            <?php if ($errors->has('name')) : ?>
+                <span><?php echo e($errors->first('name')); ?></span>
+            <?php endif; ?>
+
+            <input type="number" name="telephone" value="<?php echo e(old('telephone')); ?>" placeholder="08XXXXXXXX" required="required" autofocus>
+            <label>Email address</label>
+            <?php if ($errors->has('telephone')) : ?>
+                <span><?php echo e($errors->first('telephone')); ?></span>
+            <?php endif; ?>
+
             <input type="email" name="email" value="<?php echo e(old('email')); ?>" placeholder="name@example.com" required="required" autofocus>
             <label>Email address</label>
             <?php if ($errors->has('email')) : ?>
                 <span><?php echo e($errors->first('email')); ?></span>
-            <?php endif; ?>
-
-            <input type="text" name="username" value="<?php echo e(old('username')); ?>" placeholder="Username" required="required" autofocus>
-            <label>Username</label>
-            <?php if ($errors->has('username')) : ?>
-                <span><?php echo e($errors->first('username')); ?></span>
             <?php endif; ?>
 
             <input type="password" name="password" value="<?php echo e(old('password')); ?>" placeholder="Password" required="required">

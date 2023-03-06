@@ -8,13 +8,18 @@ use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
 {
-    public function show(){
+    public function show()
+    {
         return view('auth.register');
     }
 
-    public function register(RegisterRequest $request){
-        $user = User::create($request->validated());
+    public function register(RegisterRequest $request)
+    {
+        $username = uniqid();
+        $userData = $request->validated();
+        $userData['username'] = $username;
+        $user = User::create($userData);
         auth()->login($user);
-        return redirect('/')->with('success',"Account successfully registered.");
+        return redirect('/')->with('success', "Akun berhasil dibuat");
     }
 }
