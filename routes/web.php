@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //rute home
-    Route::get('/', 'HomeController@index')->name('home.index');
+    Route::get('/', 'HomeController@index')->name('user.index');
 
     Route::group(['middleware' => ['guest']], function () {
         //rute register

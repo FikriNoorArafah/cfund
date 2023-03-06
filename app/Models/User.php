@@ -17,6 +17,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $primaryKey = 'user_id';
     protected $fillable = [
         'name',
         'email',
@@ -25,6 +27,19 @@ class User extends Authenticatable
         'url_icon',
         'password',
     ];
+
+    public static function generateUsername(string $name): string
+    {
+        $username = str_replace(' ', '', $name);
+        $username = strtolower($username);
+        $i = 1;
+        while (static::where('username', $username)->exists()) {
+            $username = $username . $i;
+            $i++;
+        }
+        return $username;
+    }
+
 
     public function setPasswordAttribute($value)
     {

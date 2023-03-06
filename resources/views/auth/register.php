@@ -17,13 +17,13 @@
             <h1>Register</h1>
 
             <input type="text" name="name" value="<?php echo e(old('name')); ?>" placeholder="Your Name" required="required" autofocus>
-            <label>Email address</label>
+            <label>Your name</label>
             <?php if ($errors->has('name')) : ?>
                 <span><?php echo e($errors->first('name')); ?></span>
             <?php endif; ?>
 
-            <input type="number" name="telephone" value="<?php echo e(old('telephone')); ?>" placeholder="08XXXXXXXX" required="required" autofocus>
-            <label>Email address</label>
+            <input type="text" name="telephone" value="<?php echo e(old('telephone')); ?>" placeholder="08XXXXXXXX" required="required" autofocus>
+            <label>your telephone number</label>
             <?php if ($errors->has('telephone')) : ?>
                 <span><?php echo e($errors->first('telephone')); ?></span>
             <?php endif; ?>

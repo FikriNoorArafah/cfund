@@ -15,8 +15,8 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $username = uniqid();
         $userData = $request->validated();
+        $username = User::generateUsername($userData['name']);
         $userData['username'] = $username;
         $user = User::create($userData);
         auth()->login($user);
