@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('address');
-            $table->string('detail');
-            $table->text('url_icon');
+            $table->string('address')->nullable();
+            $table->string('detail')->nullable();
+            $table->text('url_icon')->nullable();
             $table->timestamps();
         });
 
