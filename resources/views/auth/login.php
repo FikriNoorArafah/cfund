@@ -30,6 +30,8 @@
 
         <button type="submit">Login</button>
 
+        <a href="<?php echo e(route('password.request')); ?>">Lupa Password?</a>
+
         <p>&copy; <?php echo date('Y'); ?></p>
     </form>
 </body>

@@ -19,7 +19,7 @@ class RegistercompanyController extends Controller
         $username = Company::generateUsername($userData['name']);
         $userData['username'] = $username;
         $company = Company::create($userData);
-        auth()->login($company);
+        auth()->guard('company')->login($company);
         return redirect('/company')->with('success', "Akun berhasil dibuat");
     }
 }

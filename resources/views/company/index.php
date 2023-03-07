@@ -23,7 +23,7 @@
             <li><?php echo auth()->guard('company')->user()->email; ?></li>
             <li><?php echo auth()->guard('company')->user()->username; ?></li>
             <li><?php echo auth()->guard('company')->user()->url_icon; ?></li>
-            <a href="<?php echo e(route('logout.perform')); ?>">logout</a>
+            <a href="<?php echo e(route('logoutcompany.perform')); ?>">logout</a>
         <?php else : ?>
             <h1>Homepage</h1>
             <p>Anda belum login</p>

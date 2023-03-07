@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'smtp'),
+    'default' => env('MAIL_MAILER', 'mailgun'),
 
     /*
     |--------------------------------------------------------------------------
@@ -50,10 +50,8 @@ return [
         ],
 
         'mailgun' => [
-            'transport' => 'mailgun',
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
+            'domain' => env('https://app.mailgun.com/app/sending/domains/sandboxf0fbd7be2964459397014c6109e0693a.mailgun.org'),
+            'secret' => env('986dd3df69c2b85e4576dd981bcdb785-7764770b-0563fe61'),
         ],
 
         'postmark' => [

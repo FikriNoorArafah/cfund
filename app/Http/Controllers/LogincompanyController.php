@@ -16,7 +16,7 @@ class LogincompanyController extends Controller
 
     protected function guard()
     {
-        return Auth::guard('company');
+        return auth()->guard('company');
     }
 
     public function login(LogincompanyRequest $request)
