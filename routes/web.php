@@ -18,14 +18,19 @@ Route::get('/', function () {
 */
 
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
+
+    //rute doc
+    Route::get('/docs', 'DocController@index')->name('doc');
+
     //rute home
     Route::get('/', 'HomeController@index')->name('user.index');
     Route::get('/company', 'CompanyController@index')->name('company.index');
 
-    Route::get('/forgot-password', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
-    Route::post('/forgot-password', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-    Route::get('/reset-password/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
-    Route::post('/reset-password', 'ResetPasswordController@reset')->name('password.update');
+    //get csrf
+    Route::get('/get-csrf-token', function () {
+        return response()->json(['csrf_token' => csrf_token()]);
+    });
+
 
 
     Route::group(['middleware' => ['guest']], function () {
@@ -44,6 +49,14 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         //rute login Company
         Route::get('/company/login', 'LogincompanyController@show')->name('logincompany.show');
         Route::post('/company/login', 'LogincompanyController@login')->name('logincompany.perform');
+
+        //rute lupa password dan kirim email
+        Route::get('/forgot-password', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+        Route::post('/forgot-password', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+
+        //rute setelah dari email
+        Route::get('/reset-password/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+        Route::post('/reset-password', 'ResetPasswordController@reset')->name('password.update');
     });
 
     Route::group(['middleware' => ['auth']], function () {

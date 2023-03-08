@@ -12,6 +12,14 @@ class HomeController extends Controller
     {
         $partners = $this->getPartners();
         $wts = $this->getWhattheysays();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'partners' => $partners,
+                'whattheysays' => $wts
+            ]);
+        }
+
         return view('user.index', compact('partners', 'wts'));
     }
 

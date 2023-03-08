@@ -42,8 +42,8 @@ class ForgotPasswordController extends Controller
         //email body
         $mj = Mailjet::getClient();
         $body = [
-            'FromEmail' => config('mail.from.address'),
-            'FromName' => config('mail.from.name'),
+            'FromEmail' => env('MAIL_FROM_ADDRESS'),
+            'FromName' => env('MAIL_FROM_NAME'),
             'Subject' => 'Reset Password',
             'Text-part' => "Click the following link to reset your password: " . route('password.reset', $token),
             'Html-part' => "Click the following link to reset your password: <a href='" . route('password.reset', $token) . "'>Reset Password</a>",

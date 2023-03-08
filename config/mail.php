@@ -91,7 +91,7 @@ return [
             'transactional' => [
                 'call' => true,
                 'options' => [
-                    'url' => 'api.mailjet.com',
+                    'url' => 'https://api.mailjet.com/v3/send',
                     'version' => 'v3.1',
                     'call' => true,
                     'secured' => true
@@ -100,7 +100,7 @@ return [
             'common' => [
                 'call' => true,
                 'options' => [
-                    'url' => 'api.mailjet.com',
+                    'url' => 'https://api.mailjet.com/v3/send',
                     'version' => 'v3',
                     'call' => true,
                     'secured' => true
