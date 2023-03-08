@@ -13,6 +13,8 @@ use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Http\Requests\ForgotPasswordRequest;
+use Mailjet\LaravelMailjet\Facades\Mailjet;
+use \Mailjet\Resources;
 
 class ForgotPasswordController extends Controller
 {
@@ -24,16 +26,39 @@ class ForgotPasswordController extends Controller
     public function sendResetLinkEmail(ForgotPasswordRequest $request)
     {
         $user = User::where('email', $request->email)->first();
-
         if (!$user) {
             return back()->withErrors([
                 'email' => 'Email not found'
             ]);
         }
-        $status = Password::sendResetLink($request->only('email'));
-        if ($status === Password::RESET_LINK_SENT) {
-            return back()->with('status', __($status));
+
+        $token = Str::random(60);
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => Hash::make($token),
+            'created at' => now()
+        ]);
+
+        //email body
+        $mj = Mailjet::getClient();
+        $body = [
+            'FromEmail' => config('mail.from.address'),
+            'FromName' => config('mail.from.name'),
+            'Subject' => 'Reset Password',
+            'Text-part' => "Click the following link to reset your password: " . route('password.reset', $token),
+            'Html-part' => "Click the following link to reset your password: <a href='" . route('password.reset', $token) . "'>Reset Password</a>",
+            'Recipients' => [
+                [
+                    'Email' => $user->email,
+                    'Name' => $user->name
+                ]
+            ]
+        ];
+        $response = $mj->post(Resources::$Email, ['body' => $body]);
+        if ($response->success()) {
+            return back()->with('status', 'Reset link has been sent to your email!');
+        } else {
+            return back()->withErrors(['email' => 'Error sending email']);
         }
-        return back()->withErrors(['email' => __($status)]);
     }
 }

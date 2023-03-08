@@ -11,7 +11,6 @@
 <body>
     <main>
         <form method="post" action="<?php echo e(route('register.perform')); ?>">
-
             <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>" />
 
             <h1>Register</h1>
