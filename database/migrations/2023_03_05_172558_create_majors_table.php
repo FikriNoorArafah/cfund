@@ -17,6 +17,10 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        DB::table('majors')->insert([
+            'name' => 'Full Stack Developer'
+        ]);
     }
 
     /**

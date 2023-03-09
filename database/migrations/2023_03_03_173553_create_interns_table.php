@@ -13,15 +13,18 @@ return new class extends Migration
     {
         Schema::create('interns', function (Blueprint $table) {
             $table->id('intern_id');
-            $table->string('name');
             $table->text('description');
-            $table->string('address');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('company_id')->on('companies')->onDelete('cascade');
-            $table->timestamp('start')->nullable();
-            $table->timestamp('close')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
+
+        DB::table('interns')->insert([
+            'description' => 'Mencari full stack develop',
+            'company_id' => '1',
+            'status' => 'dibuka',
+        ]);
     }
 
     /**

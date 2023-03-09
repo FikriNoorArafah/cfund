@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('intern_interest', function (Blueprint $table) {
+        Schema::create('intern_interests', function (Blueprint $table) {
             $table->unsignedBigInteger('intern_id');
             $table->unsignedBigInteger('interest_id');
 
@@ -20,6 +20,11 @@ return new class extends Migration
 
             $table->primary(['intern_id', 'interest_id']);
         });
+
+        DB::table('intern_interests')->insert([
+            'intern_id' => '1',
+            'interest_id' => '1',
+        ]);
     }
 
     /**

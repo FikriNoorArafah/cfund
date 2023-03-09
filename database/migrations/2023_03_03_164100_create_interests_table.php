@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('desc');
             $table->timestamps();
         });
+
+        DB::table('interests')->insert([
+            'name' => 'Teknologi',
+            'desc' => 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Optio asperiores repellat facere ut voluptatum placeat ratione. Sapiente tempore sed, eos ad architecto rerum eveniet odio provident excepturi placeat id deserunt.'
+        ]);
     }
 
     /**

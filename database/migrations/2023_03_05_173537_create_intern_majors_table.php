@@ -18,6 +18,11 @@ return new class extends Migration
             $table->foreign('major_id')->references('major_id')->on('majors');
             $table->timestamps();
         });
+
+        DB::table('intern_majors')->insert([
+            'intern_id' => '1',
+            'major_id' => '1',
+        ]);
     }
 
     /**

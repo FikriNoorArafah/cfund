@@ -20,6 +20,10 @@ return new class extends Migration
             $table->text('url_icon')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('region')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postal')->nullable();
+            $table->string('education')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -29,7 +33,7 @@ return new class extends Migration
             'email' => 'user@careerfund.com',
             'telephone' => '081234567890',
             'username' => 'user',
-            'url_icon' => 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.F7_dhF3xRAyYpc_N7t1jPwHaHa%26pid%3DApi&f=1&ipt=50adfb0d1f73d49f3fae81042bfb0e74942c993a08daf1cf5301570528ad73b9&ipo=images',
+            'url_icon' => 'https://oduvbujtzradsetbgtxm.supabase.co/storage/v1/object/sign/src/Logo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJzcmMvTG9nby5wbmciLCJpYXQiOjE2NzgzNTQ5NDAsImV4cCI6MTcwOTg5MDk0MH0.xa8ZHdGdQz5xLalc80MKYg0mdydYn4hz3dwPOPYWMjs&t=2023-03-09T09%3A42%3A24.512Z',
             'password' => bcrypt('user'),
         ]);
     }
