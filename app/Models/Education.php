@@ -10,14 +10,16 @@ class Education extends Model
     use HasFactory;
 
     protected $table = 'educations';
+    protected $primaryKey = 'education_id';
 
-    public function interns()
-    {
-        return $this->belongsToMany(Intern::class, 'intern_educations', 'education_id', 'intern_id');
-    }
+    // public function interns()
+    // {
+    //     return $this->belongsToMany(Intern::class, 'intern_educations', 'education_id', 'intern_id');
+    // }
 
     protected $fillable = [
         'education_id',
         'name',
+        'power',
     ];
 }

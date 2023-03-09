@@ -22,18 +22,20 @@ class Intern extends Model
         'close',
     ];
 
-    public function skills()
-    {
-        return $this->hasMany(Skill::class);
-    }
 
     public function educations()
     {
         return $this->belongsToMany(Education::class, 'intern_educations', 'intern_id', 'education_id');
     }
 
+
     public function majors()
     {
-        return $this->hasMany('App\Models\Major');
+        return $this->belongsToMany(Major::class, 'intern_majors', 'intern_id', 'major_id');
+    }
+
+    public function interests()
+    {
+        return $this->belongsToMany(Interest::class, 'intern_interests', 'intern_id', 'interest_id');
     }
 }

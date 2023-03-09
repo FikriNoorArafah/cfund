@@ -33,7 +33,7 @@ class HomeController extends Controller
 
     private function getInterns()
     {
-        return Intern::with(['skills', 'majors', 'educations'])->get();
+        return Intern::with(['majors', 'educations', 'interests'])->get();
     }
 
     private function getWhattheysays()

@@ -18,6 +18,11 @@ return new class extends Migration
             $table->foreign('education_id')->references('education_id')->on('educations');
             $table->timestamps();
         });
+
+        DB::table('intern_educations')->insert([
+            'intern_id' => 1,
+            'education_id' => 2
+        ]);
     }
 
     /**

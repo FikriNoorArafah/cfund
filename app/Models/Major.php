@@ -10,11 +10,12 @@ class Major extends Model
     use HasFactory;
 
     protected $table = 'majors';
+    protected $primaryKey = 'major_id';
 
-    public function intern()
-    {
-        return $this->belongsTo('App\Models\Intern');
-    }
+    // public function intern()
+    // {
+    //     return $this->hasMany(InternMajor::class, 'major_id');
+    // }
     protected $fillable = [
         'major_id',
         'name',

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('educations', function (Blueprint $table) {
             $table->id('education_id');
             $table->string('name')->unique();
-            $table->int('power');
+            $table->decimal('power');
             $table->timestamps();
         });
 
