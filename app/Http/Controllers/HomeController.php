@@ -15,15 +15,23 @@ class HomeController extends Controller
         $wts = $this->getWhattheysays();
         $intern = $this->getInterns();
 
+        $user = session('user');
+        if ($user) {
+            $userData = $user;
+        } else {
+            $userData = [];
+        }
+
         if (request()->ajax()) {
             return response()->json([
+                'user' => $userData,
                 'partners' => $partners,
                 'whattheysays' => $wts,
-                'interns' => $intern
+                'interns' => $intern,
             ]);
         }
 
-        return view('user.index', compact('partners', 'wts', 'intern'));
+        return view('user.index', compact('partners', 'wts', 'intern', 'userData'));
     }
 
     private function getPartners()
@@ -33,7 +41,7 @@ class HomeController extends Controller
 
     private function getInterns()
     {
-        return Intern::with(['majors', 'educations', 'interests'])->get();
+        return Intern::with(['majors', 'educations', 'interests', 'companies'])->get();
     }
 
     private function getWhattheysays()

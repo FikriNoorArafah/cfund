@@ -28,7 +28,6 @@ class Intern extends Model
         return $this->belongsToMany(Education::class, 'intern_educations', 'intern_id', 'education_id');
     }
 
-
     public function majors()
     {
         return $this->belongsToMany(Major::class, 'intern_majors', 'intern_id', 'major_id');
@@ -37,5 +36,10 @@ class Intern extends Model
     public function interests()
     {
         return $this->belongsToMany(Interest::class, 'intern_interests', 'intern_id', 'interest_id');
+    }
+
+    public function companies()
+    {
+        return $this->belongsTo(Company::class);
     }
 }

@@ -23,7 +23,6 @@ class LoginController extends Controller
         endif;
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
-
         Auth::login($user);
 
         return $this->authenticated($request, $user);
@@ -31,6 +30,8 @@ class LoginController extends Controller
 
     protected function authenticated(request $request, $user)
     {
+        $userData = $user->toArray();
+        $request->session()->put('user', $userData);
         return redirect()->intended()->with('success', "Kamu berhasil login");
     }
 }
