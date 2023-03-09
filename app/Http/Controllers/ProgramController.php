@@ -15,11 +15,14 @@ class ProgramController extends Controller
 
         $user = Auth::user();
 
-        $hasSelection = Participant::where('user_id', $user->user_id)
-            ->where('status', 'selection')
+        $hasSelectionOrAccepted = Participant::where('user_id', $user->user_id)
+            ->where(function ($query) {
+                $query->where('status', 'selection')
+                    ->orWhere('status', 'accepted');
+            })
             ->exists();
 
-        $regist = $hasSelection ? 'disable' : 'enable';
+        $regist = $hasSelectionOrAccepted ? 'disable' : 'enable';
 
         if (request()->ajax()) {
             return response()->json([
