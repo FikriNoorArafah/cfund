@@ -30,8 +30,6 @@ class LoginController extends Controller
 
     protected function authenticated(request $request, $user)
     {
-        $userData = $user->toArray();
-        $request->session()->put('user', $userData);
         return redirect()->intended()->with('success', "Kamu berhasil login");
     }
 }

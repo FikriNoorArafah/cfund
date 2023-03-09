@@ -24,6 +24,34 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->timestamps();
         });
+
+        DB::table('participants')->insert([
+            'user_id' => 1,
+            'intern_id' => 1,
+            'cv_url' => 'empty',
+            'status' => 'success'
+        ]);
+
+        DB::table('participants')->insert([
+            'user_id' => 1,
+            'intern_id' => 1,
+            'cv_url' => 'empty',
+            'status' => 'rejected'
+        ]);
+
+        DB::table('participants')->insert([
+            'user_id' => 1,
+            'intern_id' => 1,
+            'cv_url' => 'empty',
+            'status' => 'accepted'
+        ]);
+
+        DB::table('participants')->insert([
+            'user_id' => 1,
+            'intern_id' => 1,
+            'cv_url' => 'empty',
+            'status' => 'selection'
+        ]);
     }
 
     /**

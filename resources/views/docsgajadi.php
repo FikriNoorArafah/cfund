@@ -42,7 +42,7 @@
             <details>
                 <summary>Landing</summary>
                 <p>Route : baseurl/</p>
-                <p></p>
+                <p>disini klo user udah login, bakalan ngeoutput in data user nya, klo belom data user bakalan guest</p>
             </details>
             <details>
                 <summary>Login</summary>
@@ -58,6 +58,20 @@
         </details>
         <details class="parent" id="User">
             <summary>User</summary>
+            <details>
+                <summary>Home</summary>
+                <p>kembali ke baseurl/ lagi, </p>
+            </details>
+            <details>
+                <summary>Logout</summary>
+                <p>GET : baseurl/logout > bakalan lsg ke landing page</p>
+            </details>
+            <details>
+                <summary>Profile</summary>
+                <p>Route GET : baseurl/profile</p>
+                <p>buat update post : baseurl/profile/update</p>
+                <p>require update : name, email, telephone</p>
+            </details>
         </details>
         <details class="parent" id="Company">
             <summary>Company</summary>

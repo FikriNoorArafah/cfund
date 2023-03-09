@@ -6,32 +6,32 @@ use Illuminate\Http\Request;
 use App\Models\Partner;
 use App\Models\Intern;
 use App\Models\Whattheysay;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        if (Auth::guard('company')->check()) {
+            return app('App\Http\Controllers\CompanyController')->index();
+        }
+
         $partners = $this->getPartners();
         $wts = $this->getWhattheysays();
         $intern = $this->getInterns();
 
-        $user = session('user');
-        if ($user) {
-            $userData = $user;
-        } else {
-            $userData = [];
-        }
+        $user = Auth::user() ?? (object) ['name' => 'Guest'];
 
         if (request()->ajax()) {
             return response()->json([
-                'user' => $userData,
+                'user' => $user,
                 'partners' => $partners,
                 'whattheysays' => $wts,
                 'interns' => $intern,
             ]);
         }
 
-        return view('user.index', compact('partners', 'wts', 'intern', 'userData'));
+        return view('user.index', compact('partners', 'wts', 'intern'));
     }
 
     private function getPartners()
@@ -41,7 +41,7 @@ class HomeController extends Controller
 
     private function getInterns()
     {
-        return Intern::with(['majors', 'educations', 'interests', 'companies'])->get();
+        return Intern::with(['companies', 'majors', 'educations', 'interests'])->get();
     }
 
     private function getWhattheysays()

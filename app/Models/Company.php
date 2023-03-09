@@ -13,6 +13,7 @@ class Company extends Model implements \Illuminate\Contracts\Auth\Authenticatabl
 {
     use HasFactory, HasFactory, Notifiable, Authenticatable;
 
+    protected $table = 'companies';
     protected $primaryKey = 'company_id';
 
     protected $fillable = [

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('company_id')->references('company_id')->on('companies')->onDelete('cascade');
             $table->string('status')->nullable();
             $table->text('skill')->nullable();
+            $table->text('require')->nullable();
             $table->timestamps();
         });
 

@@ -8,6 +8,9 @@ class DocController extends Controller
 {
     public function index()
     {
-        return view('docs');
+    $file_path = resource_path('views/docs.txt');
+        return response()->file($file_path, [
+            'Content-Type' => 'text/plain'
+        ]);
     }
 }

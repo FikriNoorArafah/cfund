@@ -1,0 +1,81 @@
+:::::::::: Documentation ::::::::::
+Postman require : Buka Header lalu masukan (buat nampilin bentuk json)
+    key : X-Requested-With
+    value : XMLHttpRequest
+
+buat ngepost harus inputin token csrf.
+get csrf token : /get-csrf_token
+input nya bisa pake key _token . klo dari postman pake header
+    key : X-CSRF-TOKEN
+    value : (token csrf)
+
+post require : yang harus dimasukan
+post optional : data optional, boleh null
+
+::::::: BISA DIAKSES SEMUA :::::::
+* Landing (user setelah login bakalan ke sini lagi)
+get : /
+
+* Bantuan
+get : /help
+
+* About us klo semisal mau dari db ku buatin juga.
+
+:::::::::: YANG HANYA BISA DIAKSES GUEST ::::::::::
+note : klo udah login bakalan kepental ke home masing masing
+       login bisa pake email, tapi key nya tetep username
+       username udah otomatis di generate ke database
+* Login
+get : /login
+post : /login (require : username, password)
+
+* register
+get : /register
+post : /register (require : name, email, telephone, password, password_confirmation)
+
+* buat sender email masih sender pending
+
+* login company
+get : /company/login
+post : /company/login (require : username, password)
+
+* register company
+get : /company/register
+post : /company/register (require : name, email, telephone, password, password_confirmation)
+
+:::::::::: YANG BISA DIAKSES USER ::::::::::
+* log out
+get :/logout
+
+* profile
+get :/profile
+
+post :/profile/update
+post require : name, telephone, email (harus beda dari yang ada di db, khusus name bebas)
+post optional : second_name, education, region, city, postal
+
+* profile avatar (pending. missing firebase)
+
+* program atau magang atau apalah nyebutnya
+get :/program (show all program)
+note : disini ada detector buat user kalo udah ada intern output "regist": "disable".
+
+post :/program (pending karena belum ada firebase)
+post require : cv(file), intern_id
+
+* riwayat
+get :/history
+get :/history/selection
+get :/history/accepted
+get :/history/rejected
+get :/history/success
+
+:::::::::: YANG BISA DIAKSES PERUSAHAAN ::::::::::
+home
+get : / || /company
+
+logout
+get : /company/logout
+
+
+

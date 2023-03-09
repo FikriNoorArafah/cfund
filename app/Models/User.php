@@ -27,6 +27,11 @@ class User extends Authenticatable
         'username',
         'url_icon',
         'password',
+        'city',
+        'region',
+        'postal',
+        'education',
+        'second_name',
     ];
 
     public static function generateUsername(string $name): string
