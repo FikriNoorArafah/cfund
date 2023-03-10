@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <form method="post" action="<?php echo e(route('login.perform')); ?>">
+    <form method="post" action="<?php echo e(route('logincompany.perform')); ?>">
         <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>" />
 
         <h1>Login</h1>

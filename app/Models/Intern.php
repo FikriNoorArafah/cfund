@@ -42,4 +42,9 @@ class Intern extends Model
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
+
+    public function participants()
+    {
+        return $this->belongsTo(Participant::class, 'intern_id');
+    }
 }

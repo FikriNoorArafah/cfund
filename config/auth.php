@@ -73,8 +73,6 @@ return [
         'companies' => [
             'driver' => 'eloquent',
             'model' => App\Models\Company::class,
-            'table' => 'companies',
-            'provider' => App\Auth\CompanyProvider::class,
         ],
     ],
 

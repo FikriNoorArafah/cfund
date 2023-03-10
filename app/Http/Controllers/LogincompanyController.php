@@ -27,8 +27,7 @@ class LogincompanyController extends Controller
             return redirect()->to('company/login')
                 ->withErrors(trans('auth.failed'));
         }
-
-        $company = $this->guard()->getProvider()->retrieveByCredentials($credentials);
+        $company = $this->guard()::getProvider()->retrieveByCredentials($credentials);
 
         $this->guard()->login($company);
 

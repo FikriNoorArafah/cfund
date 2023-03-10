@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Str;
-use Supabase\SupabaseClient;
 use Illuminate\Validation\Rule;
 
 

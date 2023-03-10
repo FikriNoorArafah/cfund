@@ -34,7 +34,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     });
 
 
-
     Route::group(['middleware' => ['guest']], function () {
         //rute register
         Route::get('/register', 'RegisterController@show')->name('register.show');
@@ -71,16 +70,20 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         //history
         Route::get('/history', 'HistoryController@index')->name('user.history');
-        Route::get('/history/selection', 'HistoryController@selection')->name('user.history.selection');
-        Route::get('/history/accepted', 'HistoryController@accepted')->name('user.history.accepted');
-        Route::get('/history/rejected', 'HistoryController@rejected')->name('user.history.rejected');
-        Route::get('/history/success', 'HistoryController@success')->name('user.history.success');
+        Route::get('/history/selection', 'HistoryController@selection')->name('userhistory.selection');
+        Route::get('/history/accepted', 'HistoryController@accepted')->name('userhistory.accepted');
+        Route::get('/history/rejected', 'HistoryController@rejected')->name('userhistory.rejected');
+        Route::get('/history/success', 'HistoryController@success')->name('userhistory.success');
         //program
         Route::get('/program', 'ProgramController@index')->name('user.program');
     });
     Route::group(['middleware' => ['auth:company']], function () {
         //home
         Route::get('/company', 'CompanyController@index')->name('company.index');
-        Route::get('/company/logout', 'LogoutcompanyController@perform')->name('logoutcompany.perform');
+        Route::get('/company/logout', 'LogoutcompanyController@perform')->name('logout.company');
+
+        //show program and editing
+        Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');
+        Route::post('/company/program', 'ProgramCompanyController@index')->name('companyprogram.update');
     });
 });
