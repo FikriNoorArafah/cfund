@@ -11,7 +11,7 @@ class ProgramCompanyController extends Controller
 {
     public function index()
     {
-        $company = Auth::guard('company');
+        $company = Auth::guard('company')->user();
         $interns = $this->getInterns($company->company_id);
 
 
@@ -39,8 +39,13 @@ class ProgramCompanyController extends Controller
 
     public function updateStatus(Request $request)
     {
-        $internId = $request->input('intern_id');
-        $newStatus = $request->input('status');
+        $request->validate([
+            'intern_id' => 'required|string|max:255',
+            'status' => 'nullable|string|max:255',
+        ]);
+
+        $internId = $request->intern_id;
+        $status = $request->status;
 
         $intern = Intern::find($internId);
         if (!$intern) {
@@ -50,7 +55,7 @@ class ProgramCompanyController extends Controller
             ]);
         }
 
-        $intern->status = $newStatus;
+        $intern->status = $status;
         $intern->save();
 
         return response()->json([

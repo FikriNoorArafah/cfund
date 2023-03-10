@@ -10,7 +10,7 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Auth::guard('company');
+        $companies = Auth::guard('company')->user();
         $interns = $this->getInterns();
         $totalParticipants = 0;
         foreach ($interns as $intern) {
@@ -24,7 +24,7 @@ class CompanyController extends Controller
             ]);
         }
 
-        return view('company.index', compact('interns', 'companies', 'participantCounts'));
+        return view('company.index', compact('interns', 'companies', 'totalParticipants'));
     }
 
     private function getInterns()

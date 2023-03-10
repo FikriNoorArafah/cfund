@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\LogincompanyRequest;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Auth\SessionGuard;
+use Illuminate\Support\Facades\Log;
 
 class LogincompanyController extends Controller
 {
@@ -23,11 +24,12 @@ class LogincompanyController extends Controller
     {
         $credentials = $request->getCredentials();
 
+        Log::info('Credentials: ' . json_encode($credentials));
         if (!$this->guard()->validate($credentials)) {
             return redirect()->to('company/login')
                 ->withErrors(trans('auth.failed'));
         }
-        $company = $this->guard()::getProvider()->retrieveByCredentials($credentials);
+        $company = $this->guard()->getProvider()->retrieveByCredentials($credentials);
 
         $this->guard()->login($company);
 

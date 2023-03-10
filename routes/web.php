@@ -84,6 +84,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         //show program and editing
         Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');
-        Route::post('/company/program', 'ProgramCompanyController@index')->name('companyprogram.update');
+        Route::post('/company/program', 'ProgramCompanyController@updateStatus')->name('companyprogram.update');
     });
 });
