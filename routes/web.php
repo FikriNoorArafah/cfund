@@ -84,6 +84,19 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         //show program and editing
         Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');
-        Route::post('/company/program', 'ProgramCompanyController@updateStatus')->name('companyprogram.update');
+        Route::post('/company/program/update', 'ProgramCompanyController@updateStatus')->name('companyprogram.update');
+        Route::post('/company/program/delete', 'ProgramCompanyController@delete')->name('companyprogram.delete');
+
+        //show participant and editing 
+        Route::get('/company/participant', 'ParticipantController@index')->name('company.participant');
+        Route::post('/company/participant/update', 'ParticipantController@update')->name('companyparticipant.update');
+
+        //show financial particantp and editing 
+        Route::get('/company/financing', 'FinancingController@index')->name('company.financing');
+        //Route::post('/company/financing/update', 'FinancingController@update')->name('companyfinancing.update');
+
+        //company profile editing
+        Route::get('/company/profile', 'CompanyProfileController@index')->name('company.profile');
+        Route::post('/company/profile/update', 'CompanyProfileController@update')->name('companyprofile.update');
     });
 });

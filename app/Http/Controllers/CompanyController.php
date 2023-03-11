@@ -20,6 +20,7 @@ class CompanyController extends Controller
         if (request()->ajax()) {
             return response()->json([
                 'company' => $companies,
+                'totalParticipant' => $totalParticipants,
                 'interns' => $interns,
             ]);
         }
