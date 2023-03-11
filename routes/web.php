@@ -74,8 +74,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('/history/accepted', 'HistoryController@accepted')->name('userhistory.accepted');
         Route::get('/history/rejected', 'HistoryController@rejected')->name('userhistory.rejected');
         Route::get('/history/success', 'HistoryController@success')->name('userhistory.success');
+
         //program
         Route::get('/program', 'ProgramController@index')->name('user.program');
+        Route::post('/program/participate', 'ProgramController@index')->name('userprogram.participate');
     });
     Route::group(['middleware' => ['auth:company']], function () {
         //home
@@ -84,8 +86,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
         //show program and editing
         Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');
-        Route::post('/company/program/update', 'ProgramCompanyController@updateStatus')->name('companyprogram.update');
+        Route::post('/company/program/status', 'ProgramCompanyController@updateStatus')->name('companyprogram.status');
         Route::post('/company/program/delete', 'ProgramCompanyController@delete')->name('companyprogram.delete');
+        Route::post('/company/program/insert', 'ProgramCompanyController@insert')->name('companyprogram.participate');
 
         //show participant and editing 
         Route::get('/company/participant', 'ParticipantController@index')->name('company.participant');

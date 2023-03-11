@@ -35,6 +35,33 @@ class ProgramController extends Controller
         return view('user.program', compact('user', 'intern', 'regist'));
     }
 
+    public function participate(Request $request)
+    {
+        $intern = $this->getInterns();
+        $user = Auth::user();
+
+        $request->validate([
+            'intern_id' => 'required',
+            'cv_url' => 'required| (bentuk text)',
+        ]);
+
+        $participant = new Participant();
+        $participant->intern_id = $request->intern_id;
+        $participant->user_id = $user->user_id;
+        $participant->cv_url = $request->cv_url;
+        $participant->save();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'message' => 'Berhasil daftar intern',
+                'user' => $user,
+                'interns' => $intern,
+            ]);
+        }
+
+        return view('user.program', compact('user', 'intern', 'regist'));
+    }
+
     private function getInterns()
     {
         return Intern::with(['companies', 'majors', 'educations', 'interests'])->get();

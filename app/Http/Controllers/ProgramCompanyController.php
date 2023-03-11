@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Education;
+use App\Models\Interest;
 use App\Models\Intern;
+use App\Models\Major;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +38,57 @@ class ProgramCompanyController extends Controller
             ->with(['companies', 'majors', 'educations', 'interests'])
             ->get();
     }
+
+    public function insert(Request $request)
+    {
+        $companies = Auth::guard('company')->user();
+        $request->validate([
+            'interest' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'skill' => 'nullable|string',
+            'require' => 'nullable|string',
+            'education' => 'nullable|array',
+            'major' => 'nullable|array'
+        ]);
+
+        $interest = Interest::firstOrCreate(['name' => $request->interest]);
+        $majorIds = [];
+        $educationIds = [];
+
+        foreach ($request->major as $majorName) {
+            $major = Major::firstOrCreate(['name' => $majorName]);
+            $majorIds[] = $major->id;
+        }
+
+        foreach ($request->education as $educationName) {
+            $education = Education::where('name', $educationName)->first();
+            if ($education) {
+                $educationIds[] = $education->id;
+            }
+        }
+
+        $intern = new Intern;
+        $intern->description = $request->description;
+        $intern->company_id = $companies->company_id;
+        $intern->status = 'recruiting';
+        $intern->skill = $request->skill;
+        $intern->require = $request->require;
+        $intern->save();
+
+        $intern->interests()->sync($interest->id);
+        $intern->educations()->syncWithoutDetaching($educationIds);
+        $intern->majors()->syncWithoutDetaching($majorIds);
+
+        if (request()->ajax()) {
+            return response()->json([
+                'message' => 'Data berhasil ditambahkan.',
+                'intern' => $intern,
+            ]);
+        }
+
+        return view('companyintern.add');
+    }
+
 
 
     public function updateStatus(Request $request)
