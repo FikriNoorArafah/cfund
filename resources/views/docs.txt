@@ -1,81 +1,153 @@
 :::::::::: Documentation ::::::::::
-Postman require : Buka Header lalu masukan (buat nampilin bentuk json)
-    key : X-Requested-With
-    value : XMLHttpRequest
-
-buat ngepost harus inputin token csrf.
-get csrf token : /get-csrf_token
-input nya bisa pake key _token . klo dari postman pake header
-    key : X-CSRF-TOKEN
-    value : (token csrf)
-
-post require : yang harus dimasukan
-post optional : data optional, boleh null
-
-::::::: BISA DIAKSES SEMUA :::::::
-* Landing (user setelah login bakalan ke sini lagi)
+Landing (user setelah login bakalan ke sini lagi)
 get : /
 
-* Bantuan
+Bantuan
 get : /help
 
-* About us klo semisal mau dari db ku buatin juga.
+Mendapatkan token csrf
+get : /get-csrf_token
 
-:::::::::: YANG HANYA BISA DIAKSES GUEST ::::::::::
-note : klo udah login bakalan kepental ke home masing masing
-       login bisa pake email, tapi key nya tetep username
-       username udah otomatis di generate ke database
-* Login
-get : /login
-post : /login (require : username, password)
+Header :
+key : X-Requested-With
+value : XMLHttpRequest
 
-* register
+Response :
+{
+"csrf_token": "token_csrf"
+}
+
+Registrasi
 get : /register
-post : /register (require : name, email, telephone, password, password_confirmation)
+post : /register
 
-* buat sender email masih sender pending
+require :
+- name
+- email
+- password
+- password_confirmation
 
-* login company
-get : /company/login
-post : /company/login (require : username, password)
+optional :
+- address
+- phone
 
-* register company
+Login
+get : /login
+post : /login
+
+require :
+- email
+- password
+
+Lupa Password
+get : /forgot-password
+post : /forgot-password
+
+require :
+- email
+
+Setelah dari email untuk reset password
+get : /reset-password/{token}
+post : /reset-password
+
+require :
+- email
+- password
+- password_confirmation
+
+Profil User
+get : /profile
+post : /profile/update
+
+require :
+- name
+- email
+
+optional :
+- address
+- phone
+
+History Program User
+get : /history
+get : /history/selection
+get : /history/accepted
+get : /history/rejected
+get : /history/success
+
+Program
+get : /program
+post : /program/participate
+
+require :
+- program_id
+
+Landing Company (setelah login bakalan ke sini lagi)
+get : /company
+
+Registrasi Company
 get : /company/register
-post : /company/register (require : name, email, telephone, password, password_confirmation)
+post : /company/register
 
-:::::::::: YANG BISA DIAKSES USER ::::::::::
-* log out
-get :/logout
+require :
+- name
+- email
+- password
+- password_confirmation
 
-* profile
-get :/profile
+optional :
+- address
+- phone
 
-post :/profile/update
-post require : name, telephone, email (harus beda dari yang ada di db, khusus name bebas)
-post optional : second_name, education, region, city, postal
+Login Company
+get : /company/login
+post : /company/login
 
-* profile avatar (pending. missing firebase)
+require :
+- email
+- password
 
-* program atau magang atau apalah nyebutnya
-get :/program (show all program)
-note : disini ada detector buat user kalo udah ada intern output "regist": "disable".
+Program Company
+get : /company/program
+post : /company/program/status
+post : /company/program/delete
+post : /company/program/insert
 
-post :/program (pending karena belum ada firebase)
-post require : cv(file), intern_id
+require :
+- program_name
+- status
 
-* riwayat
-get :/history
-get :/history/selection
-get :/history/accepted
-get :/history/rejected
-get :/history/success
+optional :
+- start_date
+- end_date
+- description
 
-:::::::::: YANG BISA DIAKSES PERUSAHAAN ::::::::::
-home
-get : / || /company
+Participant Company
+get : /company/participant
+post : /company/participant/update
 
-logout
-get : /company/logout
+require :
+- participant_id
+- status
 
+Financing Company
+get : /company/financing
+#post : /company/financing/update
+
+Profil Company
+get : /company/profile
+post : /company/profile/update
+
+require :
+- name
+- email
+
+optional :
+- address
+- phone
+
+note :
+
+Semua rute di atas kecuali /get-csrf-token memerlukan token csrf untuk request POST. Token csrf bisa didapatkan dengan mengakses rute /get-csrf-token terlebih dahulu. Setelah mendapatkan token csrf, token tersebut harus dimasukkan ke dalam header dengan key 'X-CSRF-TOKEN' dan value berupa token csrf tersebut.
+Rute-rute yang hanya dapat diakses setelah login, harus menyertakan token auth pada header. Token auth bisa didapatkan setelah login.
 
 

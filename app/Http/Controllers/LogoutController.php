@@ -12,6 +12,13 @@ class LogoutController extends Controller
     {
         Session::flush();
         Auth::logout();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'succes' => true,
+                'message' => 'berhasil logout',
+            ]);
+        }
         return redirect('login');
     }
 }

@@ -29,7 +29,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('/help', 'HelpController@index')->name('user.help');
 
     //get csrf
-    Route::get('/get-csrf-token', function () {
+    Route::get('/csrf_token', function () {
         return response()->json(['csrf_token' => csrf_token()]);
     });
 
@@ -64,7 +64,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         //rute logout
         Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
 
-        //profile 
+        //profile
         Route::get('/profile', 'ProfileController@index')->name('user.profile');
         Route::post('/profile/update', 'ProfileController@update')->name('user.profile.update');
 
@@ -90,11 +90,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('/company/program/delete', 'ProgramCompanyController@delete')->name('companyprogram.delete');
         Route::post('/company/program/insert', 'ProgramCompanyController@insert')->name('companyprogram.participate');
 
-        //show participant and editing 
+        //show participant and editing
         Route::get('/company/participant', 'ParticipantController@index')->name('company.participant');
         Route::post('/company/participant/update', 'ParticipantController@update')->name('companyparticipant.update');
 
-        //show financial particantp and editing 
+        //show financial particantp and editing
         Route::get('/company/financing', 'FinancingController@index')->name('company.financing');
         //Route::post('/company/financing/update', 'FinancingController@update')->name('companyfinancing.update');
 
