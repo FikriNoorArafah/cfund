@@ -28,37 +28,29 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //rute help
     Route::get('/help', 'HelpController@index')->name('user.help');
 
-    //get csrf
-    Route::get('/csrf_token', function () {
-        return response()->json(['csrf_token' => csrf_token()]);
-    });
+    //rute register
+    Route::get('/register', 'RegisterController@show')->name('register.show');
+    Route::post('/register', 'RegisterController@register')->name('register.perform');
 
+    //rute login
+    Route::get('/login', 'LoginController@show')->name('login.show');
+    Route::post('/login', 'LoginController@login')->name('login.perform');
 
-    Route::group(['middleware' => ['guest']], function () {
-        //rute register
-        Route::get('/register', 'RegisterController@show')->name('register.show');
-        Route::post('/register', 'RegisterController@register')->name('register.perform');
+    //rute register Company
+    Route::get('/company/register', 'RegistercompanyController@show')->name('registercompany.show');
+    Route::post('/company/register', 'RegistercompanyController@register')->name('registercompany.perform');
 
-        //rute login
-        Route::get('/login', 'LoginController@show')->name('login.show');
-        Route::post('/login', 'LoginController@login')->name('login.perform');
+    //rute login Company
+    Route::get('/company/login', 'LogincompanyController@show')->name('logincompany.show');
+    Route::post('/company/login', 'LogincompanyController@login')->name('logincompany.perform');
 
-        //rute register Company
-        Route::get('/company/register', 'RegistercompanyController@show')->name('registercompany.show');
-        Route::post('/company/register', 'RegistercompanyController@register')->name('registercompany.perform');
+    //rute lupa password dan kirim email
+    Route::get('/forgot-password', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('/forgot-password', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 
-        //rute login Company
-        Route::get('/company/login', 'LogincompanyController@show')->name('logincompany.show');
-        Route::post('/company/login', 'LogincompanyController@login')->name('logincompany.perform');
-
-        //rute lupa password dan kirim email
-        Route::get('/forgot-password', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
-        Route::post('/forgot-password', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-
-        //rute setelah dari email
-        Route::get('/reset-password/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
-        Route::post('/reset-password', 'ResetPasswordController@reset')->name('password.update');
-    });
+    //rute setelah dari email
+    Route::get('/reset-password/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('/reset-password', 'ResetPasswordController@reset')->name('password.update');
 
     Route::group(['middleware' => ['auth']], function () {
         //rute logout

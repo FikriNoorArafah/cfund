@@ -30,6 +30,7 @@ class LoginController extends Controller
 
     protected function authenticated(request $request, $user)
     {
-        return redirect()->intended()->with('success', "Kamu berhasil login");
+        return response()->json(['csrf_token' => csrf_token()]);
+        //return redirect()->intended()->with('success', "Kamu berhasil login");
     }
 }
