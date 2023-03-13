@@ -11,31 +11,32 @@ class LandingController extends Controller
 {
     public function index()
     {
-        $partners = Partner::all()->take(8);
-        // $intern = Intern::join('companies', 'interns.company_id', '=', 'companies.company_id')
-        //     ->join('intern_majors', 'interns.intern_id', '=', 'intern_majors.intern_id')
-        //     ->join('majors', 'intern_majors.major_id', '=', 'majors.major_id')
-        //     ->leftJoin('intern_educations', 'interns.intern_id', '=', 'intern_educations.intern_id')
-        //     ->leftJoin('educations', 'intern_educations.education_id', '=', 'educations.education_id')
-        //     ->select('interns.intern_id', 'companies.name as company', 'majors.name as major', 'educations.name as education', 'companies.region', 'companies.city', 'companies.url_icon')
-        //     ->take(7)
-        //     ->get();
+        $partners = Partner::select('name', 'url_icon')->take(8)->get();
 
-        $intern = Intern::with([
-            'companies' => function ($query) {
-                return $query->select('company_id', 'name', 'region', 'city', 'url_icon');
-            }, 'majors', 'educations', 'interests', 'levels'
-        ])
+        $intern = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels'])
             ->take(7)
             ->get();
 
+        $data = [];
+        foreach ($intern as $program) {
+            $data[] = [
+                'title' => $program->majors->pluck('name')->first(),
+                'url' => $program->companies->url_icon,
+                'company' => $program->companies->name,
+                'region' => $program->companies->region,
+                'city' => $program->companies->city,
+                'kategori' => $program->interests->pluck('name')->first(),
+                'education' => $program->educations->pluck('name'),
+                'level' => $program->levels->pluck('name')->first(),
+            ];
+        }
 
-        $wts = Whattheysay::all()->take(3);
+        $wts = Whattheysay::select('name', 'position', 'comment')->take(3)->get();
 
         return response()->json([
             'partner' => $partners,
-            'whattheysay' => $wts,
-            'intern' => $intern,
+            'katamereka' => $wts,
+            'program' => $data,
         ]);
     }
     public function welcome()
