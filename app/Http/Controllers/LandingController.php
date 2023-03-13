@@ -32,14 +32,14 @@ class LandingController extends Controller
 
         $wts = Whattheysay::all()->take(3);
 
-        if (request()) {
-            return response()->json([
-                'partner' => $partners,
-                'whattheysay' => $wts,
-                'intern' => $intern,
-            ]);
-        }
-
-        return view('welcome', compact('partners', 'intern', 'wts'));
+        return response()->json([
+            'partner' => $partners,
+            'whattheysay' => $wts,
+            'intern' => $intern,
+        ]);
+    }
+    public function welcome()
+    {
+        return view('welcome');
     }
 }

@@ -19,8 +19,10 @@ Route::get('/', function () {
 
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
+    //rute web
+    Route::get('/', 'LandingController@welcome');
     //rute landing
-    Route::get('/', 'LandingController@index');
+    Route::get('/landing', 'LandingController@index');
 
     //rute about
     Route::get('/about', 'AboutController@index');
