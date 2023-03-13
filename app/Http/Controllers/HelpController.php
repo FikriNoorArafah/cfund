@@ -10,7 +10,20 @@ class HelpController extends Controller
 {
     public function index()
     {
+        $helps = Help::all()->take(5);
+        return response()(['helps' => $helps,]);
+    }
+
+    public function user()
+    {
         $helps = Help::all();
-        return response()->json(['helps' => $helps,]);
+        $user = Auth::user();
+        return response()([
+            'user' => [
+                'name' => $user->name . ' ' . $user->second_name,
+                'url_icon' => $user->url_icon
+            ],
+            'helps' => $helps,
+        ]);
     }
 }

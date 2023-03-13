@@ -14,7 +14,8 @@ class LoginController extends Controller
 
         if (!Auth::validate($credentials)) :
             return response()([
-                'csrf_token' => trans('auth.failed')
+                'success' => false,
+                'message' => trans('auth.failed')
             ]);
         endif;
 
@@ -27,6 +28,7 @@ class LoginController extends Controller
     protected function authenticated(request $request, $user)
     {
         return response()([
+            'success' => true,
             'csrf_token' => csrf_token()
         ]);
     }

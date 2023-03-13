@@ -19,7 +19,7 @@ class RegisterRequest extends FormRequest
             'telephone' => 'required|unique:users,telephone',
             //    'username' => 'required|unique:users,username',
             'password' => 'required|min:8',
-            'password_confirmation' => 'required|same:password'
+            // 'password_confirmation' => 'required|same:password'
         ];
     }
 }

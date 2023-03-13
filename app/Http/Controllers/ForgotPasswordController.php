@@ -33,7 +33,8 @@ class ForgotPasswordController extends Controller
 
         Mail::to($request->email)->send(new ResetPassword($otp));
 
-        return response()->json([
+        return response()([
+            'success' => true,
             'message' => 'OTP has been sent to your email!'
         ]);
     }
@@ -49,7 +50,10 @@ class ForgotPasswordController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return response()->json(['success' => true, 'message' => 'Your password has been reset.']);
+        return response()([
+            'success' => true,
+            'message' => 'Your password has been reset.'
+        ]);
     }
 
     public function otp(Request $request)
@@ -65,8 +69,14 @@ class ForgotPasswordController extends Controller
             ->first();
 
         if (!$otp || !Hash::check($request->otp, $otp->token)) {
-            return response()->json(['message' => 'Invalid OTP']);
+            return response()([
+                'success' => false,
+                'message' => 'Invalid OTP'
+            ]);
         }
-        return response()->json(['message' => 'berhasil']);
+        return response()([
+            'success' => true,
+            'message' => 'berhasil'
+        ]);
     }
 }

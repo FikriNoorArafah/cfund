@@ -21,6 +21,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     //rute web
     Route::get('/', 'LandingController@welcome');
+
     //rute landing
     Route::get('/landing', 'LandingController@index');
 
@@ -31,7 +32,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('/help', 'HelpController@index');
 
     //rute register
-    Route::get('/register', 'RegisterController@show');
     Route::post('/register', 'RegisterController@register');
 
     //rute login
@@ -56,7 +56,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('/home', 'HomeController@index');
 
         //help
-        Route::get('/user/help', 'UserHelpController@index');
+        Route::get('/user/help', 'HelpController@user');
 
         //profile
         Route::get('/profile', 'ProfileController@index');
