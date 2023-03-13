@@ -12,7 +12,7 @@ class UserHelpController extends Controller
     {
         $helps = Help::all();
         $user = Auth::user();
-        return response()->json([
+        return response()([
             'user' => [
                 'name' => $user->name . ' ' . $user->second_name,
                 'url_icon' => $user->url_icon
