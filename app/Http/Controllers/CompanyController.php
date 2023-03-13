@@ -11,27 +11,19 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Auth::guard('company')->user();
-        $interns = $this->getInterns();
+        $interns = Intern::with(['companies', 'majors', 'educations', 'interests'])
+            ->select('interns.intern_id', 'companies.name as company', 'majors.name as major', 'educations.name as education', 'companies.region', 'companies.city', 'companies.url_icon')
+            ->withCount('participants')
+            ->get();
         $totalParticipants = 0;
         foreach ($interns as $intern) {
             $totalParticipants += $intern->participants_count;
         }
 
-        if (request()->ajax()) {
-            return response()->json([
-                'company' => $companies,
-                'totalParticipant' => $totalParticipants,
-                'interns' => $interns,
-            ]);
-        }
-
-        return view('company.index', compact('interns', 'companies', 'totalParticipants'));
-    }
-
-    private function getInterns()
-    {
-        return Intern::with(['companies', 'majors', 'educations', 'interests'])
-            ->withCount('participants')
-            ->get();
+        return response()([
+            'company' => $companies,
+            'totalParticipant' => $totalParticipants,
+            'interns' => $interns,
+        ]);
     }
 }

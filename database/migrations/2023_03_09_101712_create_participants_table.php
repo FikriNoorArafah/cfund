@@ -21,6 +21,8 @@ return new class extends Migration
             $table->text('cv_url');
             $table->string('schedule')->nullable();
             $table->string('place')->nullable();
+            $table->text('contract_template_url')->nullable();
+            $table->text('contract_url')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
         });

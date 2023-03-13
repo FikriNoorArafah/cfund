@@ -8,11 +8,6 @@ use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
 {
-    public function show()
-    {
-        return view('auth.register');
-    }
-
     public function register(RegisterRequest $request)
     {
         $userData = $request->validated();
@@ -20,6 +15,9 @@ class RegisterController extends Controller
         $userData['username'] = $username;
         $user = User::create($userData);
         auth()->login($user);
-        return redirect('/')->with('success', "Akun berhasil dibuat");
+        return response()->json([
+            'csrf_token' => csrf_token(),
+            'message' => 'akun berhasil dibuat',
+        ]);
     }
 }

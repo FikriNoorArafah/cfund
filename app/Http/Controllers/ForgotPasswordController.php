@@ -3,62 +3,70 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
-use App\Models\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 use App\Http\Requests\ForgotPasswordRequest;
-use Mailjet\LaravelMailjet\Facades\Mailjet;
-use \Mailjet\Resources;
+use App\Mail\ResetPassword;
+use App\Models\PasswordReset;
+use App\Models\User;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Carbon;
 
 class ForgotPasswordController extends Controller
 {
-    public function showLinkRequestForm()
+    public function sendResetLinkEmail(Request $request)
     {
-        return view('auth.forgot-password');
-    }
-
-    public function sendResetLinkEmail(ForgotPasswordRequest $request)
-    {
-        $user = User::where('email', $request->email)->first();
-        if (!$user) {
-            return back()->withErrors([
-                'email' => 'Email not found'
-            ]);
-        }
-
-        $token = Str::random(60);
-        DB::table('password_resets')->insert([
-            'email' => $request->email,
-            'token' => Hash::make($token),
-            'created at' => now()
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
         ]);
 
-        //email body
-        $mj = Mailjet::getClient();
-        $body = [
-            'FromEmail' => env('MAIL_FROM_ADDRESS'),
-            'FromName' => env('MAIL_FROM_NAME'),
-            'Subject' => 'Reset Password',
-            'Text-part' => "Click the following link to reset your password: " . route('password.reset', $token),
-            'Html-part' => "Click the following link to reset your password: <a href='" . route('password.reset', $token) . "'>Reset Password</a>",
-            'Recipients' => [
-                [
-                    'Email' => $user->email,
-                    'Name' => $user->name
-                ]
-            ]
-        ];
-        $response = $mj->post(Resources::$Email, ['body' => $body]);
-        if ($response->success()) {
-            return back()->with('status', 'Reset link has been sent to your email!');
-        } else {
-            return back()->withErrors(['email' => 'Error sending email']);
+        $otp = random_int(100000, 999999);
+        $password_reset = new PasswordReset();
+        $password_reset->email = $request->email;
+        $password_reset->token = Hash::make($otp);
+        $password_reset->created_at = now();
+        $password_reset->save();
+
+        Mail::to($request->email)->send(new ResetPassword($otp));
+
+        return response()->json([
+            'message' => 'OTP has been sent to your email!'
+        ]);
+    }
+
+    public function reset(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json(['success' => true, 'message' => 'Your password has been reset.']);
+    }
+
+    public function otp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required',
+            'email' => 'required|email'
+        ]);
+
+        $otp = PasswordReset::where('email', $request->email)
+            ->where('created_at', '>', Carbon::now()->subMinutes(2))
+            ->latest()
+            ->first();
+
+        if (!$otp || !Hash::check($request->otp, $otp->token)) {
+            return response()->json(['message' => 'Invalid OTP']);
         }
+        return response()->json(['message' => 'berhasil']);
     }
 }

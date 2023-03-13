@@ -12,30 +12,18 @@ class ParticipantController extends Controller
     public function index()
     {
         $companies = Auth::guard('company')->user();
-        $participant = $this->getParticipant($companies->company_id);
-        $totalParticipants = $participant->count();
-
-        if (request()->ajax()) {
-            return response()->json([
-                'company' => $companies,
-                'totalParticipant' => $totalParticipants,
-                'participant' => $participant,
-            ]);
-        }
-
-        return view('company.participant', compact('participant', 'companies', 'totalParticipants'));
-    }
-
-
-    public function getParticipant($companyId)
-    {
-        $participants = Participant::join('interns', 'interns.intern_id', '=', 'participants.intern_id')
+        $participant = $participants = Participant::join('interns', 'interns.intern_id', '=', 'participants.intern_id')
             ->join('users', 'users.user_id', '=', 'participants.user_id')
-            ->where('interns.company_id', '=', $companyId)
+            ->where('interns.company_id', '=', $companies->company_id)
             ->where('participants.status', 'selection')
             ->select('users.name', 'users.second_name', 'participants.*')
             ->get();
-        return $participants;
+        $totalParticipants = $participant->count();
+        return response()([
+            'company' => $companies,
+            'totalParticipant' => $totalParticipants,
+            'participant' => $participant,
+        ]);
     }
 
     public function update(Request $request)
@@ -48,7 +36,7 @@ class ParticipantController extends Controller
 
         $participant = Participant::find($request->participant_id);
         if (!$participant) {
-            return response()->json([
+            return response()([
                 'success' => false,
             ]);
         }
@@ -57,9 +45,8 @@ class ParticipantController extends Controller
         $participant->place = $request->place;
         $participant->save();
 
-        return response()->json([
+        return response()([
             'success' => true,
-            'participant' => $participant,
         ]);
     }
 }

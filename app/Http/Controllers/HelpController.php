@@ -10,22 +10,7 @@ class HelpController extends Controller
 {
     public function index()
     {
-        $helps = $this->getHelps();
-
-        $user = Auth::user() ?? (object) ['name' => 'Guest'];
-
-        if (request()->ajax()) {
-            return response()->json([
-                'user' => $user,
-                'helps' => $helps,
-            ]);
-        }
-
-        return view('user.help', compact('helps', 'user'));
-    }
-
-    private function getHelps()
-    {
-        return Help::all();
+        $helps = Help::all();
+        return response()->json(['helps' => $helps,]);
     }
 }

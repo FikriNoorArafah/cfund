@@ -10,34 +10,46 @@ use Illuminate\Support\Facades\Log;
 
 class LogincompanyController extends Controller
 {
-    public function show()
-    {
-        return view('company.login');
-    }
-
-    protected function guard()
-    {
-        return auth()->guard('company');
-    }
-
     public function login(LogincompanyRequest $request)
     {
         $credentials = $request->getCredentials();
 
-        Log::info('Credentials: ' . json_encode($credentials));
-        if (!$this->guard()->validate($credentials)) {
-            return redirect()->to('company/login')
-                ->withErrors(trans('auth.failed'));
+        if (auth()->guard('company')->attempt($credentials)) {
+            $company = auth()->guard('company')->user();
+            return response()([
+                'message' => 'anda berhasil login',
+                'csrf_token' => csrf_token()
+            ]);
+        } else {
+            return response()([
+                'message' => trans('auth.failed')
+            ]);
         }
-        $company = $this->guard()->getProvider()->retrieveByCredentials($credentials);
-
-        $this->guard()->login($company);
-
-        return $this->authenticated($request, $company);
     }
 
-    protected function authenticated(request $request, $company)
-    {
-        return redirect('/company')->with('success', "Anda berhasil login");
-    }
+
+    // public function login(LogincompanyRequest $request)
+    // {
+    //     try {
+    //         $credentials = $request->getCredentials();
+
+    //         if (!$this->guard()->validate($credentials)) {
+    //             throw new \Exception(trans('auth.failed'));
+    //         }
+
+    //         $company = $this->guard()->getProvider()->retrieveByCredentials($credentials);
+
+    //         if (!$company) {
+    //             throw new \Exception(trans('auth.failed'));
+    //         }
+
+    //         $this->guard()->login($company);
+
+    //         return $this->authenticated($request, $company);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'message' => $e->getMessage()
+    //         ]);
+    //     }
+    // }
 }

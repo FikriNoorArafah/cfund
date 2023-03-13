@@ -7,22 +7,19 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 
 class ProfileController extends Controller
 {
     public function index()
     {
-        $user = Auth::user() ?? (object) ['name' => 'Guest'];
-
-        if (request()->ajax()) {
-            return response()->json([
-                'user' => $user,
-            ]);
-        }
-
-        return view('user.profile', compact('user'));
+        $user = Auth::user();
+        return response()->json([
+            'user' => $user,
+        ]);
     }
+
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -61,61 +58,50 @@ class ProfileController extends Controller
 
         $user->update($data);
 
-        if (request()->ajax()) {
-            return response()->json([
-                'message' => 'Data user berhasil diupdate.',
-                'user' => $user,
-            ]);
-        };
-
-        return view('user.profile', compact('user'));
+        return response()->json([
+            'message' => 'Data user berhasil diupdate.',
+            'user' => $user,
+        ]);
     }
 
-    // public function updateAvatar(Request $request)
-    // {
-    //     $user = Auth::user();
+    public function updateAvatar(Request $request)
+    {
+        $user = Auth::user();
 
-    //     $request->validate([
-    //         'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //     ]);
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    //     $supabase = new SupabaseClient(env('SUPABASE_URL'), env('SUPABASE_KEY'));
-    //     $bucketName = 'src';
-    //     $filePath = $request->file('avatar')->getPathname();
-    //     $fileName = $request->file('avatar')->getClientOriginalName();
-    //     $response = $supabase->storage()->upload($bucketName, $fileName, $filePath);
+        $avatar = $request->file('avatar');
+        $result = Cloudinary::upload($avatar->getPathname(), [
+            'resource_type' => 'image',
+            'folder' => 'careerfund/user',
+            'public_id' => uniqid(),
+        ]);
 
-    //     $user->icon_url = $response['publicURL'];
-    //     $user->User::save();
+        $user->url_icon = $result->getSecurePath();
+        $user->save();
 
-    //     if (request()->ajax()) {
-    //         return response()->json([
-    //             'message' => 'Avatar berhasil diupdate.',
-    //             'user' => $user,
-    //             'avatar_url' => $response['publicURL'],
-    //         ]);
-    //     };
+        return response()->json([
+            'message' => 'Avatar berhasil diupdate.',
+            'user' => $user->name,
+            'url' => $result->getSecurePath(),
+        ]);
+    }
 
-    //     return view('user.profile', compact('user'));
-    // }
-    // public function deleteAvatar()
-    // {
-    //     $user = Auth::user();
+    public function deleteAvatar()
+    {
+        $user = Auth::user();
 
-    //     $supabase = new SupabaseClient(env('SUPABASE_URL'), env('SUPABASE_KEY'));
-    //     $bucketName = 'src';
-    //     $fileName = basename($user->icon_url);
-    //     $supabase->storage()->remove($bucketName, $fileName);
+        Cloudinary::destroy($user->url_icon);
 
-    //     $user->icon_url = null;
-    //     $user->User::save();
-    //     if (request()->ajax()) {
-    //         return response()->json([
-    //             'message' => 'Avatar berhasil dihapus.',
-    //             'user' => $user,
-    //         ]);
-    //     };
+        $user->url_icon = null;
+        $user->save();
 
-    //     return view('user.profile', compact('user'));
-    // }
+        return response()->json([
+            'message' => 'Avatar berhasil dihapus.',
+            'user' => $user->name,
+            'url' => $user->url_icon
+        ]);
+    }
 }

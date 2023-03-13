@@ -8,18 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function show()
-    {
-        return view('auth.login');
-    }
-
     public function login(LoginRequest $request)
     {
         $credentials = $request->getCredentials();
 
         if (!Auth::validate($credentials)) :
-            return redirect()->to('login')
-                ->withErrors(trans('auth.failed'));
+            return response()([
+                'csrf_token' => trans('auth.failed')
+            ]);
         endif;
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
@@ -30,7 +26,8 @@ class LoginController extends Controller
 
     protected function authenticated(request $request, $user)
     {
-        return response()->json(['csrf_token' => csrf_token()]);
-        //return redirect()->intended()->with('success', "Kamu berhasil login");
+        return response()([
+            'csrf_token' => csrf_token()
+        ]);
     }
 }

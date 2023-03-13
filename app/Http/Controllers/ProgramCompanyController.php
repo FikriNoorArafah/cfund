@@ -18,14 +18,10 @@ class ProgramCompanyController extends Controller
         $interns = $this->getInterns($company->company_id);
 
 
-        if (request()->ajax()) {
-            return response()->json([
-                'company' => $company,
-                'interns' => $interns,
-            ]);
-        }
-
-        return view('company.program', compact('company', 'interns'));
+        return response()->json([
+            'company' => $company,
+            'interns' => $interns,
+        ]);
     }
 
     private function getInterns($companyId)
@@ -79,14 +75,10 @@ class ProgramCompanyController extends Controller
         $intern->educations()->syncWithoutDetaching($educationIds);
         $intern->majors()->syncWithoutDetaching($majorIds);
 
-        if (request()->ajax()) {
-            return response()->json([
-                'message' => 'Data berhasil ditambahkan.',
-                'intern' => $intern,
-            ]);
-        }
-
-        return view('companyintern.add');
+        return response()->json([
+            'message' => 'Data berhasil ditambahkan.',
+            'intern' => $intern,
+        ]);
     }
 
 

@@ -25,17 +25,22 @@ class Intern extends Model
 
     public function educations()
     {
-        return $this->belongsToMany(Education::class, 'intern_educations', 'intern_id', 'education_id');
+        return $this->belongsToMany(Education::class, 'intern_educations', 'intern_id', 'education_id')->select('name');
+    }
+
+    public function levels()
+    {
+        return $this->belongsToMany(Education::class, 'intern_levels', 'intern_id', 'level_id')->select('name');
     }
 
     public function majors()
     {
-        return $this->belongsToMany(Major::class, 'intern_majors', 'intern_id', 'major_id');
+        return $this->belongsToMany(Major::class, 'intern_majors', 'intern_id', 'major_id')->select('name');
     }
 
     public function interests()
     {
-        return $this->belongsToMany(Interest::class, 'intern_interests', 'intern_id', 'interest_id');
+        return $this->belongsToMany(Interest::class, 'intern_interests', 'intern_id', 'interest_id')->select('name');
     }
 
     public function companies()

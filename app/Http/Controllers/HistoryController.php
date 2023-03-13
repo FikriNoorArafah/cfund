@@ -141,15 +141,10 @@ class HistoryController extends Controller
                 'intern' => $intern
             ];
         }
-
-        if (request()->ajax()) {
-            return response()->json([
-                'user' => $user,
-                'history' => $history,
-            ]);
-        }
-
-        return view('user.history', compact('history'));
+        return response()->json([
+            'user' => $user,
+            'history' => $history,
+        ]);
     }
 
     public function success()
@@ -178,13 +173,9 @@ class HistoryController extends Controller
             ];
         }
 
-        if (request()->ajax()) {
-            return response()->json([
-                'user' => $user,
-                'history' => $history,
-            ]);
-        }
-
-        return view('user.history', compact('history'));
+        return response()->json([
+            'user' => $user,
+            'history' => $history,
+        ]);
     }
 }

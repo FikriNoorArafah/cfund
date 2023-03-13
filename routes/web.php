@@ -19,57 +19,59 @@ Route::get('/', function () {
 
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
-    //rute doc
-    Route::get('/docs', 'DocController@index')->name('doc');
+    //rute landing
+    Route::get('/', 'LandingController@index');
 
-    //rute home
-    Route::get('/', 'HomeController@index')->name('user.index');
+    //rute about
+    Route::get('/about', 'AboutController@index');
 
     //rute help
-    Route::get('/help', 'HelpController@index')->name('user.help');
+    Route::get('/help', 'HelpController@index');
 
     //rute register
-    Route::get('/register', 'RegisterController@show')->name('register.show');
-    Route::post('/register', 'RegisterController@register')->name('register.perform');
+    Route::get('/register', 'RegisterController@show');
+    Route::post('/register', 'RegisterController@register');
 
     //rute login
-    Route::get('/login', 'LoginController@show')->name('login.show');
-    Route::post('/login', 'LoginController@login')->name('login.perform');
+    Route::post('/login', 'LoginController@login');
 
     //rute register Company
-    Route::get('/company/register', 'RegistercompanyController@show')->name('registercompany.show');
-    Route::post('/company/register', 'RegistercompanyController@register')->name('registercompany.perform');
+    Route::post('/company/register', 'RegistercompanyController@register');
 
     //rute login Company
-    Route::get('/company/login', 'LogincompanyController@show')->name('logincompany.show');
-    Route::post('/company/login', 'LogincompanyController@login')->name('logincompany.perform');
+    Route::post('/company/login', 'LogincompanyController@login');
 
-    //rute lupa password dan kirim email
-    Route::get('/forgot-password', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
-    Route::post('/forgot-password', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-
-    //rute setelah dari email
-    Route::get('/reset-password/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
-    Route::post('/reset-password', 'ResetPasswordController@reset')->name('password.update');
+    //rute lupa password
+    Route::post('/forgotpassword', 'ForgotPasswordController@sendResetLinkEmail');
+    Route::post('/otp', 'ForgotPasswordController@otp');
+    Route::post('/resetpassword', 'ForgotPasswordController@reset');
 
     Route::group(['middleware' => ['auth']], function () {
         //rute logout
-        Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+        Route::get('/logout', 'LogoutController@perform');
+
+        //rute home
+        Route::get('/home', 'HomeController@index');
+
+        //help
+        Route::get('/user/help', 'UserHelpController@index');
 
         //profile
-        Route::get('/profile', 'ProfileController@index')->name('user.profile');
-        Route::post('/profile/update', 'ProfileController@update')->name('user.profile.update');
+        Route::get('/profile', 'ProfileController@index');
+        Route::post('/profile/update', 'ProfileController@update');
+        Route::post('/profile/avatar/upload', 'ProfileController@updateAvatar');
+        Route::post('/profile/avatar/delete', 'ProfileController@deleteAvatar');
 
         //history
-        Route::get('/history', 'HistoryController@index')->name('user.history');
-        Route::get('/history/selection', 'HistoryController@selection')->name('userhistory.selection');
-        Route::get('/history/accepted', 'HistoryController@accepted')->name('userhistory.accepted');
-        Route::get('/history/rejected', 'HistoryController@rejected')->name('userhistory.rejected');
-        Route::get('/history/success', 'HistoryController@success')->name('userhistory.success');
+        Route::get('/history', 'HistoryController@index');
+        Route::get('/history/selection', 'HistoryController@selection');
+        Route::get('/history/accepted', 'HistoryController@accepted');
+        Route::get('/history/rejected', 'HistoryController@rejected');
+        Route::get('/history/success', 'HistoryController@success');
 
         //program
-        Route::get('/program', 'ProgramController@index')->name('user.program');
-        Route::post('/program/participate', 'ProgramController@index')->name('userprogram.participate');
+        Route::get('/program', 'ProgramController@index');
+        Route::post('/program/participate', 'ProgramController@participate');
     });
     Route::group(['middleware' => ['auth:company']], function () {
         //home

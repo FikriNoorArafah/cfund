@@ -12,6 +12,9 @@ class LogoutcompanyController extends Controller
     {
         Session::flush();
         Auth::logout();
-        return redirect('company/login');
+        return response()->json([
+            'succes' => true,
+            'message' => 'berhasil logout',
+        ]);
     }
 }
