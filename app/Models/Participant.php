@@ -20,4 +20,9 @@ class Participant extends Model
     {
         return $this->belongsTo(Intern::class);
     }
+
+    public function semesters()
+    {
+        return $this->belongsTo(Semester::class);
+    }
 }

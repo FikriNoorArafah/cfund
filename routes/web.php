@@ -36,7 +36,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('/register/otp', 'RegisterController@otp');
 
     //rute login
-    // Route::get('/login', 'LoginController@login')->name('login');
     Route::post('/login', 'LoginController@login');
 
     //rute register Company
@@ -93,7 +92,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('/company/participant/update', 'ParticipantController@update')->name('companyparticipant.update');
 
         //show financial particantp and editing
-        Route::get('/company/financing', 'FinancingController@index')->name('company.financing');
+        Route::get('/company/financing', 'FinancingController@index');
+        Route::post('/company/financing/detail', 'FinancingController@detail');
         //Route::post('/company/financing/update', 'FinancingController@update')->name('companyfinancing.update');
 
         //company profile editing

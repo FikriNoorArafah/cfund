@@ -16,12 +16,13 @@ class LogincompanyController extends Controller
 
         if (auth()->guard('company')->attempt($credentials)) {
             $company = auth()->guard('company')->user();
-            return response()([
-                'message' => 'anda berhasil login',
+            return response()->json([
+                'success' => true,
                 'csrf_token' => csrf_token()
             ]);
         } else {
-            return response()([
+            return response()->json([
+                'success' => false,
                 'message' => trans('auth.failed')
             ]);
         }
