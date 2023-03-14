@@ -93,13 +93,13 @@ class FinancingController extends Controller
         $semester->payment_amount = $request->payment_amount;
         $semester->save();
 
-        $paymentUrl = Snap::createTransactionUrl($snapToken);
+        // $paymentUrl = Snap::createTransactionUrl($snapToken);
 
         return response()->json([
             'success' => true,
             'message' => 'Payment URL generated successfully',
             'snaptoken' => $snapToken,
-            'url' => $paymentUrl
+            // 'url' => $paymentUrl
         ]);
     }
 
