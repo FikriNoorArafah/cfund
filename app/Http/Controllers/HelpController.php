@@ -11,14 +11,14 @@ class HelpController extends Controller
     public function index()
     {
         $helps = Help::all()->take(5);
-        return response()(['helps' => $helps,]);
+        return response()->json(['helps' => $helps,]);
     }
 
     public function user()
     {
         $helps = Help::all();
         $user = Auth::user();
-        return response()([
+        return response()->json([
             'user' => [
                 'name' => $user->name . ' ' . $user->second_name,
                 'url_icon' => $user->url_icon
