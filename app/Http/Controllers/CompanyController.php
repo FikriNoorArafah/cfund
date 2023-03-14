@@ -11,8 +11,8 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Auth::guard('company')->user();
-        $interns = Intern::with(['companies', 'majors', 'educations', 'interests'])
-            ->select('interns.intern_id', 'companies.name as company', 'majors.name as major', 'educations.name as education', 'companies.region', 'companies.city', 'companies.url_icon')
+        $interns = Intern::with(['majors', 'educations', 'interests'])
+            ->select('interns.intern_id', 'majors.name as major', 'educations.name as education')
             ->withCount('participants')
             ->get();
         $totalParticipants = 0;
