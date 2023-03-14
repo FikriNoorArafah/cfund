@@ -24,6 +24,11 @@ return new class extends Migration
             $table->foreign('semester_id')->references('semester_id')->on('semesters')->onDelete('cascade');
             $table->foreign('participant_id')->references('participant_id')->on('participants')->onDelete('cascade');
         });
+        DB::table('tasks')->insert([
+            'participant_id' => 3,
+            'name' => 'Belajar Laravel',
+            'semester_id' => 1,
+        ]);
     }
 
     public function down(): void

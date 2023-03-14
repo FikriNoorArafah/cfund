@@ -21,6 +21,11 @@ return new class extends Migration
 
             $table->foreign('participant_id')->references('participant_id')->on('participants')->onDelete('cascade');
         });
+
+        DB::table('semesters')->insert([
+            'participant_id' => 3,
+            'semester_number' => 1,
+        ]);
     }
 
     /**
