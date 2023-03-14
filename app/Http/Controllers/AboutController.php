@@ -12,7 +12,7 @@ class AboutController extends Controller
 {
     public function index()
     {
-        $abouts = About::all();
+        $abouts = About::select('title', 'subtitle')->first();
         $user = User::count();
         $company = Company::count();
         $participant = Participant::distinct('user_id')->count('user_id');
