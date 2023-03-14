@@ -1,11 +1,18 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
+
 use App\Models\Participant;
+use App\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Contracts\Service\Attribute\Required;
+use Midtrans\Config;
+use Midtrans\Snap;
+use Midtrans\Transaction;
 
 class FinancingController extends Controller
 {
@@ -36,26 +43,116 @@ class FinancingController extends Controller
 
         $companies = Auth::guard('company')->user();
 
-        $participant = Participant::with(['semesters.tasks'])->join('interns', 'interns.intern_id', '=', 'participants.intern_id')
-            ->join('users', 'users.user_id', '=', 'participants.user_id')
-            ->where('interns.company_id', '=', $companies->company_id)
+        $participant = Participant::with(['users:user_id,name,second_name', 'semesters.tasks'])
             ->where('participants.status', 'accepted')
             ->where('participants.participant_id', $request->participant_id)
-            ->select('users.name', 'users.second_name', 'participants.*')
             ->first();
 
-        if (!$participant) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Participant not found'
-            ]);
-        }
 
         return response()->json([
             'company' => $companies,
             'participant' => $participant,
         ]);
     }
+
+
+    public function payment(Request $request)
+    {
+        $request->validate([
+            'semester_id' => 'required|integer',
+            'payment_amount' => 'required|integer'
+        ]);
+
+        $semester = Semester::findOrFail($request->semester_id);
+
+        if ($semester->payment_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Uang sudah pernah dikirimkan',
+            ]);
+        }
+
+        $midtransClientKey = env('MIDTRANS_CLIENT_KEY');
+        $midtransServerKey = env('MIDTRANS_SERVER_KEY');
+
+        Config::$serverKey = $midtransServerKey;
+        Config::$clientKey = $midtransClientKey;
+        Config::$isProduction = false;
+
+        $details = [
+            'transaction_details' => [
+                'order_id' => 'ORDER-ID-' . time(),
+                'gross_amount' => intval($request->payment_amount),
+                'currency' => 'IDR',
+            ],
+
+        ];
+
+        $snapToken = Snap::getSnapToken($details);
+
+        $semester->payment_amount = $request->payment_amount;
+        $semester->save();
+
+        $paymentUrl = Snap::createTransactionUrl($snapToken);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment URL generated successfully',
+            'snaptoken' => $snapToken,
+            'url' => $paymentUrl
+        ]);
+    }
+
+
+
+    public function handlePaymentNotification(Request $request)
+    {
+        $request->validate([
+            'transaction_status' => 'required|string',
+            'order_id' => 'required|string',
+            'gross_amount' => 'required|numeric',
+        ]);
+
+        $transactionStatus = $request->transaction_status;
+        $orderId = $request->order_id;
+        $grossAmount = $request->gross_amount;
+
+        // Midtrans API call to get transaction details
+        // ...
+
+        $semester = Semester::where('payment_id', $orderId)->first();
+
+        if (!$semester) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid payment ID',
+            ]);
+        }
+
+        if ($semester->payment_amount != $grossAmount) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment amount does not match',
+            ]);
+        }
+
+        if ($transactionStatus == 'capture') {
+            $semester->payment_id = $orderId;
+            $semester->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment successful',
+                'semester' => $semester,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment unsuccessful',
+            ]);
+        }
+    }
+
 
 
 

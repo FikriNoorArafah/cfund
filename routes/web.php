@@ -79,7 +79,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::group(['middleware' => ['auth:company']], function () {
         //home
         Route::get('/company', 'CompanyController@index')->name('company.index');
-        Route::get('/company/logout', 'LogoutcompanyController@perform')->name('logout.company');
+        Route::get('/company/logout', 'LogoutController@company');
 
         //show program and editing
         Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');
@@ -94,6 +94,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         //show financial particantp and editing
         Route::get('/company/financing', 'FinancingController@index');
         Route::post('/company/financing/detail', 'FinancingController@detail');
+        Route::post('/company/payment', 'FinancingController@payment');
         //Route::post('/company/financing/update', 'FinancingController@update')->name('companyfinancing.update');
 
         //company profile editing

@@ -18,4 +18,15 @@ class LogoutController extends Controller
             'message' => 'berhasil logout',
         ]);
     }
+
+    public function company()
+    {
+        Session::flush();
+        Auth::logout();
+
+        return response()->json([
+            'succes' => true,
+            'message' => 'berhasil logout',
+        ]);
+    }
 }

@@ -10,4 +10,9 @@ class Semester extends Model
     use HasFactory;
     protected $table = 'semesters';
     protected $primaryKey = 'semester_id';
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'semester_id');
+    }
 }

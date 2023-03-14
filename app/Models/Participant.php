@@ -13,16 +13,16 @@ class Participant extends Model
 
     public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id') ;
     }
 
     public function interns()
     {
-        return $this->belongsTo(Intern::class);
+        return $this->belongsTo(Intern::class, 'intern_id');
     }
 
     public function semesters()
     {
-        return $this->belongsTo(Semester::class);
+        return $this->hasMany(Semester::class, 'participant_id');
     }
 }
