@@ -12,7 +12,7 @@ class CompanyController extends Controller
     {
         $companies = Auth::guard('company')->user();
         $interns = Intern::with(['majors', 'educations', 'interests'])
-            ->select('interns.intern_id', 'majors.name as major', 'educations.name as education')
+            ->where('interns.company_id', $companies->company_id)
             ->withCount('participants')
             ->get();
         $totalParticipants = 0;
@@ -20,7 +20,7 @@ class CompanyController extends Controller
             $totalParticipants += $intern->participants_count;
         }
 
-        return response()([
+        return response()->json([
             'company' => $companies,
             'totalParticipant' => $totalParticipants,
             'interns' => $interns,

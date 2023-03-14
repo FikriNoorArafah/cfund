@@ -78,7 +78,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     });
     Route::group(['middleware' => ['auth:company']], function () {
         //home
-        Route::get('/company', 'CompanyController@index')->name('company.index');
+        Route::get('/company', 'CompanyController@index');
         Route::get('/company/logout', 'LogoutController@company');
 
         //show program and editing
