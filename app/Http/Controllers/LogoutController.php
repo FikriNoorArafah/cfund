@@ -13,8 +13,8 @@ class LogoutController extends Controller
         Session::flush();
         Auth::logout();
 
-        return response()([
-            'succes' => true,
+        return response()->json([
+            'success' => true,
             'message' => 'berhasil logout',
         ]);
     }

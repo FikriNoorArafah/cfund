@@ -33,8 +33,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     //rute register
     Route::post('/register', 'RegisterController@register');
+    Route::post('/register/otp', 'RegisterController@otp');
 
     //rute login
+    // Route::get('/login', 'LoginController@login')->name('login');
     Route::post('/login', 'LoginController@login');
 
     //rute register Company

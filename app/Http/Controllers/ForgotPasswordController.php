@@ -21,8 +21,17 @@ class ForgotPasswordController extends Controller
     public function sendResetLinkEmail(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
         ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Email tidak terdaftar'
+            ]);
+        }
 
         $otp = random_int(100000, 999999);
         $password_reset = new PasswordReset();
@@ -33,7 +42,7 @@ class ForgotPasswordController extends Controller
 
         Mail::to($request->email)->send(new ResetPassword($otp));
 
-        return response()([
+        return response()->json([
             'success' => true,
             'message' => 'OTP has been sent to your email!'
         ]);
@@ -50,7 +59,7 @@ class ForgotPasswordController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return response()([
+        return response()->json([
             'success' => true,
             'message' => 'Your password has been reset.'
         ]);
@@ -69,12 +78,12 @@ class ForgotPasswordController extends Controller
             ->first();
 
         if (!$otp || !Hash::check($request->otp, $otp->token)) {
-            return response()([
+            return response()->json([
                 'success' => false,
                 'message' => 'Invalid OTP'
             ]);
         }
-        return response()([
+        return response()->json([
             'success' => true,
             'message' => 'berhasil'
         ]);

@@ -12,22 +12,17 @@ class LoginController extends Controller
     {
         $credentials = $request->getCredentials();
 
-        if (!Auth::validate($credentials)) :
-            return response()([
+        if (!Auth::validate($credentials)) {
+            return response()->json([
                 'success' => false,
                 'message' => trans('auth.failed')
             ]);
-        endif;
+        }
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
         Auth::login($user);
 
-        return $this->authenticated($request, $user);
-    }
-
-    protected function authenticated(request $request, $user)
-    {
-        return response()([
+        return response()->json([
             'success' => true,
             'csrf_token' => csrf_token()
         ]);

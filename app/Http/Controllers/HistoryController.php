@@ -15,33 +15,23 @@ class HistoryController extends Controller
         $user = Auth::user();
 
         $participants = Participant::where('user_id', $user->user_id)->get();
-        $intern = Intern::with(['companies', 'majors', 'educations', 'interests'])->first();
+        $intern = Intern::with(['companies', 'majors', 'educations'])->first();
 
         $history = [];
 
         foreach ($participants as $participant) {
             $history[] = [
-                'participant_id' => $participant->participant_id,
-                'user_id' => $participant->user_id,
-                'intern_id' => $participant->intern_id,
                 'cv_url' => $participant->cv_url,
                 'schedule' => $participant->schedule,
                 'place' => $participant->place,
                 'status' => $participant->status,
-                'created_at' => $participant->created_at,
-                'updated_at' => $participant->updated_at,
                 'intern' => $intern
             ];
         }
-
-        if (request()->ajax()) {
-            return response()->json([
-                'user' => $user,
-                'history' => $history,
-            ]);
-        }
-
-        return view('user.history', compact('history'));
+        return response()->json([
+            'user' => $user,
+            'history' => $history,
+        ]);
     }
 
     public function selection()
@@ -51,33 +41,23 @@ class HistoryController extends Controller
         $participants = Participant::where('user_id', $user->user_id)
             ->where('status', 'selection')
             ->get();
-        $intern = Intern::with(['companies', 'majors', 'educations', 'interests'])->first();
+        $intern = Intern::with(['companies', 'majors', 'educations'])->first();
 
         $history = [];
 
         foreach ($participants as $participant) {
             $history[] = [
-                'participant_id' => $participant->participant_id,
-                'user_id' => $participant->user_id,
-                'intern_id' => $participant->intern_id,
                 'cv_url' => $participant->cv_url,
                 'schedule' => $participant->schedule,
                 'place' => $participant->place,
                 'status' => $participant->status,
-                'created_at' => $participant->created_at,
-                'updated_at' => $participant->updated_at,
                 'intern' => $intern
             ];
         }
-
-        if (request()->ajax()) {
-            return response()->json([
-                'user' => $user,
-                'history' => $history,
-            ]);
-        }
-
-        return view('user.history', compact('history'));
+        return response()->json([
+            'user' => $user,
+            'history' => $history,
+        ]);
     }
 
     public function accepted()
@@ -87,33 +67,24 @@ class HistoryController extends Controller
         $participants = Participant::where('user_id', $user->user_id)
             ->where('status', 'accepted')
             ->get();
-        $intern = Intern::with(['companies', 'majors', 'educations', 'interests'])->first();
+        $intern = Intern::with(['companies', 'majors', 'educations'])->first();
 
         $history = [];
 
         foreach ($participants as $participant) {
             $history[] = [
-                'participant_id' => $participant->participant_id,
-                'user_id' => $participant->user_id,
-                'intern_id' => $participant->intern_id,
                 'cv_url' => $participant->cv_url,
                 'schedule' => $participant->schedule,
                 'place' => $participant->place,
                 'status' => $participant->status,
-                'created_at' => $participant->created_at,
-                'updated_at' => $participant->updated_at,
                 'intern' => $intern
             ];
         }
 
-        if (request()->ajax()) {
-            return response()->json([
-                'user' => $user,
-                'history' => $history,
-            ]);
-        }
-
-        return view('user.history', compact('history'));
+        return response()->json([
+            'user' => $user,
+            'history' => $history,
+        ]);
     }
 
     public function rejected()
@@ -123,21 +94,16 @@ class HistoryController extends Controller
         $participants = Participant::where('user_id', $user->user_id)
             ->where('status', 'rejected')
             ->get();
-        $intern = Intern::with(['companies', 'majors', 'educations', 'interests'])->first();
+        $intern = Intern::with(['companies', 'majors', 'educations'])->first();
 
         $history = [];
 
         foreach ($participants as $participant) {
             $history[] = [
-                'participant_id' => $participant->participant_id,
-                'user_id' => $participant->user_id,
-                'intern_id' => $participant->intern_id,
                 'cv_url' => $participant->cv_url,
                 'schedule' => $participant->schedule,
                 'place' => $participant->place,
                 'status' => $participant->status,
-                'created_at' => $participant->created_at,
-                'updated_at' => $participant->updated_at,
                 'intern' => $intern
             ];
         }
@@ -154,21 +120,16 @@ class HistoryController extends Controller
         $participants = Participant::where('user_id', $user->user_id)
             ->where('status', 'success')
             ->get();
-        $intern = Intern::with(['companies', 'majors', 'educations', 'interests'])->first();
+        $intern = Intern::with(['companies', 'majors', 'educations'])->first();
 
         $history = [];
 
         foreach ($participants as $participant) {
             $history[] = [
-                'participant_id' => $participant->participant_id,
-                'user_id' => $participant->user_id,
-                'intern_id' => $participant->intern_id,
                 'cv_url' => $participant->cv_url,
                 'schedule' => $participant->schedule,
                 'place' => $participant->place,
                 'status' => $participant->status,
-                'created_at' => $participant->created_at,
-                'updated_at' => $participant->updated_at,
                 'intern' => $intern
             ];
         }
