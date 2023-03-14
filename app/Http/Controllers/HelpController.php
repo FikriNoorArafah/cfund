@@ -10,13 +10,13 @@ class HelpController extends Controller
 {
     public function index()
     {
-        $helps = Help::select('question', 'answer')->take(5);
+        $helps = Help::select('question', 'answer')->take(5)->get();
         return response()->json(['helps' => $helps,]);
     }
 
     public function user()
     {
-        $helps = Help::select('question', 'answer');
+        $helps = Help::select('question', 'answer')->take(5)->get();
         $user = Auth::user();
         return response()->json([
             'user' => [
