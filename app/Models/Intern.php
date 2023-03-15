@@ -28,9 +28,14 @@ class Intern extends Model
         return $this->belongsToMany(Education::class, 'intern_educations', 'intern_id', 'education_id');
     }
 
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'intern_departments', 'intern_id', 'department_id');
+    }
+
     public function levels()
     {
-        return $this->belongsToMany(Education::class, 'intern_levels', 'intern_id', 'level_id');
+        return $this->belongsToMany(Level::class, 'intern_levels', 'intern_id', 'level_id');
     }
 
     public function majors()

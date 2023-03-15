@@ -13,7 +13,7 @@ class LandingController extends Controller
     {
         $partners = Partner::select('name', 'url_icon')->take(8)->get();
 
-        $intern = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels'])
+        $intern = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels', 'departments'])
             ->take(7)
             ->get();
 
@@ -27,6 +27,7 @@ class LandingController extends Controller
                 'city' => $program->companies->city,
                 'kategori' => $program->interests->pluck('name')->first(),
                 'education' => $program->educations->pluck('name'),
+                'department' => $program->departments->pluck('name')->first(),
                 'level' => $program->levels->pluck('name')->first(),
             ];
         }
