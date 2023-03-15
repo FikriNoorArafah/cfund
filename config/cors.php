@@ -28,15 +28,9 @@ return [
 
     'allowed_origins' => ['*'],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['*'],
 
-    'allowed_headers' => [
-        'Content-Type',
-        'X-Auth-Token',
-        'X-Requested-with',
-        'Origin',
-        'Authorization',
-    ],
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => false,
 
