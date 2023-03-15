@@ -29,6 +29,16 @@ class DepartmentController extends Controller
         return response()->json(['message' => 'Tables created successfully.']);
     }
 
+    public function createemail()
+    {
+        Schema::create('email_verifications', function (Blueprint $table) {
+            $table->string('email')->index();
+            $table->string('token');
+            $table->timestamps();
+        });
+        return response()->json(['message' => 'Tables created successfully.']);
+    }
+
     public function insertData()
     {
         DB::table('departments')->insert([
