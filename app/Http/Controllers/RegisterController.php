@@ -17,8 +17,7 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request)
     {
         $userData = $request->validated();
-        $username = User::generateUsername($userData['name']);
-        $userData['username'] = $username;
+
 
         $emailExist = User::where('email', $userData['email'])->exists();
 
@@ -47,8 +46,6 @@ class RegisterController extends Controller
 
         Mail::to($request->email)->send(new EmailVerify($otp));
 
-        session()->put('registration_data', $userData);
-
         return response()->json([
             'success' => true,
             'message' => 'OTP has been sent to your email!'
@@ -59,7 +56,10 @@ class RegisterController extends Controller
     {
         $request->validate([
             'otp' => 'required',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'name' => 'required',
+            'telephone' => 'required',
+            'password' => 'required',
         ]);
 
         $otp = EmailVerification::where('email', $request->email)
@@ -74,9 +74,17 @@ class RegisterController extends Controller
             ]);
         }
 
-        $userData = session()->get('registration_data');
+        $username = User::generateUsername($request->name);
 
+        $userData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'telephone' => $request->telephone,
+            'password' => Hash::make($request->password),
+            'username' => $username
+        ];
         $user = User::create($userData);
+        
         Auth::login($user);
 
         return response()->json([
