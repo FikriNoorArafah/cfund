@@ -18,22 +18,21 @@ class RegisterController extends Controller
     {
         $userData = $request->validated();
 
-
-        $emailExist = User::where('email', $userData['email'])->exists();
+        $emailExist = User::where('email', $request->email)->exists();
 
         if ($emailExist) {
             return response()->json([
                 'success' => false,
-                'message' => 'Email sudah dipakai',
+                'message' => 'Email sudah dipakai'
             ]);
         }
 
-        $telephoneExist = User::where('telephone', $userData['telephone'])->exists();
+        $telephoneExist = User::where('telephone', $request->telephone)->exists();
 
         if ($telephoneExist) {
             return response()->json([
                 'success' => false,
-                'message' => 'Telepon sudah dipakai',
+                'message' => 'Telepon sudah dipakai'
             ]);
         }
 
@@ -84,7 +83,7 @@ class RegisterController extends Controller
             'username' => $username
         ];
         $user = User::create($userData);
-        
+
         Auth::login($user);
 
         return response()->json([
