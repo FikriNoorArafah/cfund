@@ -16,7 +16,12 @@ class RegisterController extends Controller
 {
     public function register(RegisterRequest $request)
     {
-        $userData = $request->validated();
+        $request->validated([
+            'name' => 'required|min:4',
+            'email' => 'required',
+            'telephone' => 'required',
+            'password' => 'required|min:8',
+        ]);
 
         $emailExist = User::where('email', $request->email)->exists();
 
