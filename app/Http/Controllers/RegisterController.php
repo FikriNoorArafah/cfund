@@ -63,7 +63,7 @@ class RegisterController extends Controller
         ]);
 
         $otp = EmailVerification::where('email', $request->email)
-            ->where('created_at', '>', Carbon::now()->subMinutes(2))
+            ->where('created_at', '>', Carbon::now()->subMinutes(5))
             ->latest()
             ->first();
 
