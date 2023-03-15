@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Validator;
 use Symfony\Contracts\Service\Attribute\Required;
 use Midtrans\Config;
 use Midtrans\Snap;
-use Midtrans\Transaction;
 
 class FinancingController extends Controller
 {
@@ -72,12 +71,10 @@ class FinancingController extends Controller
             ]);
         }
 
-        $midtransClientKey = env('MIDTRANS_CLIENT_KEY');
-        $midtransServerKey = env('MIDTRANS_SERVER_KEY');
-
-        Config::$serverKey = $midtransServerKey;
-        Config::$clientKey = $midtransClientKey;
-        Config::$isProduction = false;
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config(('midtrans.is_3ds'));
 
         $details = [
             'transaction_details' => [
