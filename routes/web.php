@@ -20,8 +20,8 @@ Route::get('/', function () {
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     //development menu
-    Route::get('create/department', 'DepartemenController@createTables');
-    Route::get('insert/department', 'DepartemenController@insertData');
+    Route::get('create/department', 'DepartmentController@createTables');
+    Route::get('insert/department', 'DepartmentController@insertData');
 
 
     //end development menu
