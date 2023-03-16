@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['register']]);
+    }
+    
     public function register(RegisterRequest $request)
     {
         $request->validated([
