@@ -2,8 +2,9 @@
 
 namespace App\Exceptions;
 
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Response;
+use Exception;
 use Throwable;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -50,13 +51,13 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (TokenInvalidException $e, $request) {
-            return response()->json(['error' => 'invalid token'], 401);
+            return Response::json(['error' => 'invalid token'], 401);
         });
         $this->renderable(function (TokenExpiredException $e, $request) {
-            return response()->json(['error' => 'token expired'], 401);
+            return Response::json(['error' => 'token expired'], 401);
         });
         $this->renderable(function (JWTException $e, $request) {
-            return response()->json(['error' => 'token not parsed'], 401);
+            return Response::json(['error' => 'token not parsed'], 401);
         });
     }
 }

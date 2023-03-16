@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,9 +23,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //development menu
     Route::get('show/user', 'UserController@index');
     //end dev
-
-    //end development menu
-
+    
     //rute web
     Route::get('/', 'LandingController@welcome');
 
@@ -38,11 +37,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('/help', 'HelpController@index');
 
     //rute register
-    Route::post('/register', 'RegisterController@register');
-    Route::post('/register/otp', 'RegisterController@otp');
+    Route::post('/register', [RegisterController::class, 'register']);
+    Route::post('/otp', [RegisterController::class, 'otp']);
 
-    //rute login
-    Route::post('/login', 'LoginController@login');
+    Route::post('/login', [RegisterController::class, 'login']);
 
     //rute register Company
     Route::post('/company/register', 'RegistercompanyController@register');
@@ -52,12 +50,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     //rute lupa password
     Route::post('/forgotpassword', 'ForgotPasswordController@sendResetLinkEmail');
-    Route::post('/otp', 'ForgotPasswordController@otp');
+    Route::post('/lupaotp', 'ForgotPasswordController@otp');
     Route::post('/resetpassword', 'ForgotPasswordController@reset');
 
     Route::post('/user/help', 'HelpController@user')->middleware('auth.jwt');
 
-    Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware(['auth.api'])->group(function () {
         //rute logout
         Route::post('/logout', 'LogoutController@logout');
 

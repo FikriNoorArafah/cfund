@@ -13,12 +13,14 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class RegisterController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['register', 'otp']]);
+        $this->middleware('auth:api', ['except' => ['otp', 'register']]);
     }
 
     public function register(RegisterRequest $request)
@@ -77,6 +79,7 @@ class RegisterController extends Controller
             ->where('created_at', '>', Carbon::now()->subMinutes(5))
             ->latest()
             ->first();
+
 
         if (!$otp || !Hash::check($request->otp, $otp->token)) {
             return response()->json([
