@@ -55,7 +55,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('/otp', 'ForgotPasswordController@otp');
     Route::post('/resetpassword', 'ForgotPasswordController@reset');
 
-    Route::group(['middleware' => ['auth']], function () {
+    Route::post('/user/help', 'HelpController@user')->middleware('auth.jwt');
+
+    Route::middleware(['auth:sanctum'])->group(function () {
         //rute logout
         Route::post('/logout', 'LogoutController@logout');
 
@@ -63,7 +65,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('/home', 'HomeController@index');
 
         //help
-        Route::post('/user/help', 'HelpController@user');
 
         //profile
         Route::get('/profile', 'ProfileController@index');

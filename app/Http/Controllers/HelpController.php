@@ -8,6 +8,12 @@ use App\Models\Help;
 
 class HelpController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
         $helps = Help::select('question', 'answer')->take(5)->get();
@@ -16,6 +22,7 @@ class HelpController extends Controller
 
     public function user(Request $request)
     {
+
         $helps = Help::select('question', 'answer')->take(5)->get();
         $user = Auth::user();
         return response()->json([

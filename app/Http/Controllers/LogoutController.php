@@ -12,6 +12,8 @@ class LogoutController extends Controller
     {
         $user = Auth::user();
 
+        $request->session()->invalidate();
+        $user->tokens()->delete();
         $user->remember_token = null;
         $user->save();
 

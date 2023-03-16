@@ -60,7 +60,7 @@ class RegisterController extends Controller
 
     public function otp(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'otp' => 'required',
             'email' => 'required|email',
             'name' => 'required',
@@ -93,13 +93,7 @@ class RegisterController extends Controller
         $user = User::create($userData);
 
         Auth::login($user);
-        $request->session()->regenerateToken();
-
-        $user->remember_token = csrf_token();
-        $user->save();
-
-        $token = csrf_token();
-        $request->session()->put('user_csrf_token', $token);
+        $token = auth()->attempt($credentials);
 
         return response()->json([
             'success' => true,

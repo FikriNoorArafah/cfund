@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
     public function login(LoginRequest $request)
     {
         try {
@@ -16,13 +21,7 @@ class LoginController extends Controller
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
                 $request->session()->regenerateToken();
-
-                $user->remember_token = csrf_token();
-                $user->save();
-
-                $token = csrf_token();
-                $request->session()->put('user_csrf_token', $token);
-
+                $token = auth()->attempt($credentials);
                 return response()->json([
                     'success' => true,
                     'token' => $token,
@@ -47,11 +46,7 @@ class LoginController extends Controller
             if (auth()->guard('company')->attempt($credentials)) {
                 $companies = auth()->guard('company')->user();
                 $request->session()->regenerateToken();
-                $companies->remember_token = csrf_token();
-                $companies->save();
-
-                $token = csrf_token();
-                $request->session()->put('user_csrf_token', $token);
+                $token = auth()->attempt($credentials);
                 return response()->json([
                     'success' => true,
                     'token' => $token,
