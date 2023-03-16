@@ -16,7 +16,7 @@ class LoginController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => trans('auth.failed')
-            ]);
+            ], 422);
         }
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);

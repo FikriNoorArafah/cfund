@@ -10,47 +10,43 @@ use Illuminate\Support\Facades\Log;
 
 class LogincompanyController extends Controller
 {
-    public function login(LogincompanyRequest $request)
-    {
-        $credentials = $request->getCredentials();
-
-        if (auth()->guard('company')->attempt($credentials)) {
-            $company = auth()->guard('company')->user();
-            return response()->json([
-                'success' => true,
-                'csrf_token' => csrf_token()
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => trans('auth.failed')
-            ]);
-        }
-    }
-
-
     // public function login(LogincompanyRequest $request)
     // {
-    //     try {
-    //         $credentials = $request->getCredentials();
+    //     $credentials = $request->getCredentials();
 
-    //         if (!$this->guard()->validate($credentials)) {
-    //             throw new \Exception(trans('auth.failed'));
-    //         }
-
-    //         $company = $this->guard()->getProvider()->retrieveByCredentials($credentials);
-
-    //         if (!$company) {
-    //             throw new \Exception(trans('auth.failed'));
-    //         }
-
-    //         $this->guard()->login($company);
-
-    //         return $this->authenticated($request, $company);
-    //     } catch (\Exception $e) {
+    //     if (auth()->guard('company')->attempt($credentials)) {
+    //         $company = auth()->guard('company')->user();
     //         return response()->json([
-    //             'message' => $e->getMessage()
+    //             'success' => true,
+    //             'csrf_token' => csrf_token()
     //         ]);
+    //     } else {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => trans('auth.failed')
+    //         ], 422);
     //     }
     // }
+
+    public function login(LogincompanyRequest $request)
+    {
+        try {
+            $credentials = $request->getCredentials();
+
+            if (auth()->guard('company')->attempt($credentials)) {
+                $company = auth()->guard('company')->user();
+                return response()->json([
+                    'success' => true,
+                    'csrf_token' => csrf_token()
+                ]);
+            } else {
+                throw new \Exception(trans('auth.failed'));
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 422);
+        }
+    }
 }

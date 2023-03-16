@@ -26,7 +26,7 @@ class RegistercompanyController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Email sudah dipakai',
-            ]);
+            ], 422);
         }
 
         $telephoneExist = Company::where('telephone', $userData['telephone'])->exists();
@@ -35,7 +35,7 @@ class RegistercompanyController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Telepon sudah dipakai',
-            ]);
+            ], 422);
         }
 
         $otp = random_int(100000, 999999);
@@ -46,9 +46,6 @@ class RegistercompanyController extends Controller
         $emailverify->save();
 
         Mail::to($request->email)->send(new EmailVerify($otp));
-
-        session()->put('registration_data', $userData);
-
         return response()->json([
             'success' => true,
             'message' => 'OTP has been sent to your email!'
@@ -58,7 +55,10 @@ class RegistercompanyController extends Controller
     {
         $request->validate([
             'otp' => 'required',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'name' => 'required',
+            'telephone' => 'required',
+            'password' => 'required',
         ]);
 
         $otp = EmailVerification::where('email', $request->email)
@@ -70,12 +70,20 @@ class RegistercompanyController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid OTP'
-            ]);
+            ], 422);
         }
 
-        $userData = session()->get('registration_data');
+        $username = Company::generateUsername($request->name);
+        $userData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'telephone' => $request->telephone,
+            'password' => Hash::make($request->password),
+            'username' => $username
+        ];
         $company = Company::create($userData);
         Auth::login($company);
+
         return response()->json([
             'success' => true,
             'csrf_token' => csrf_token(),

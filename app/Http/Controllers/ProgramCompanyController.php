@@ -14,37 +14,46 @@ class ProgramCompanyController extends Controller
 {
     public function index()
     {
-        $company = Auth::guard('company')->user();
-        $interns = $this->getInterns($company->company_id);
-
-
-        return response()->json([
-            'company' => $company,
-            'interns' => $interns,
-        ]);
-    }
-
-    private function getInterns($companyId)
-    {
-        if (!$companyId) {
-            return collect();
-        }
-
-        return Intern::where('company_id', $companyId)
-            ->with(['companies', 'majors', 'educations', 'interests'])
+        $companies = Auth::guard('company')->user();
+        $interns = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels', 'departments'])
+            ->where('interns.company_id', $companies->company_id)
             ->get();
+
+        $data = [];
+        foreach ($interns as $program) {
+            $data[] = [
+                'title' => $program->majors->pluck('name')->first(),
+                'url' => $program->companies->url_icon,
+                'company' => $program->companies->name,
+                'region' => $program->companies->region,
+                'city' => $program->companies->city,
+                'kategori' => $program->interests->pluck('name')->first(),
+                'education' => $program->educations->pluck('name'),
+                'department' => $program->departments->pluck('name')->first(),
+                'level' => $program->levels->pluck('name')->first(),
+            ];
+        }
+        return response()->json([
+            'company' => [
+                'name' => $companies->name,
+                'url_icon' => $companies->url_icon,
+                'region' => $companies->region,
+                'city' => $companies->city,
+            ],
+            'program' => $data,
+        ]);
     }
 
     public function insert(Request $request)
     {
         $companies = Auth::guard('company')->user();
         $request->validate([
-            'interest' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'skill' => 'nullable|string',
-            'require' => 'nullable|string',
+            'interest' => 'required',
+            'description' => 'nullable',
+            'skill' => 'nullable',
+            'level' => 'nullable',
             'education' => 'nullable|array',
-            'major' => 'nullable|array'
+            'major' => 'nullable'
         ]);
 
         $interest = Interest::firstOrCreate(['name' => $request->interest]);
