@@ -54,9 +54,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('/lupaotp', 'ForgotPasswordController@otp');
     Route::post('/resetpassword', 'ForgotPasswordController@reset');
 
-    Route::post('/user/help', 'HelpController@user')->middleware('auth.jwt');
-
-    Route::middleware(['auth.api'])->group(function () {
+    Route::middleware(['auth.jwt'])->group(function () {
         //rute logout
         Route::post('/logout', 'LogoutController@logout');
 
@@ -64,6 +62,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('/home', 'HomeController@index');
 
         //help
+        Route::post('/user/help', 'HelpController@user');
 
         //profile
         Route::get('/profile', 'ProfileController@index');
@@ -81,8 +80,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         //program
         Route::get('/program', 'ProgramController@index');
         Route::post('/program/participate', 'ProgramController@participate');
-    });
-    Route::group(['middleware' => ['auth:company']], function () {
         //home
         Route::get('/company', 'CompanyController@index');
         Route::get('/company/logout', 'LogoutController@company');
