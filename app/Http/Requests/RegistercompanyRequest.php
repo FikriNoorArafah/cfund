@@ -22,11 +22,10 @@ class RegistercompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:4|unique:companies,name',
-            'email' => 'required|email:rfc,dns|unique:companies,email',
-            //    'username' => 'required|unique:users,username',
-            'password' => 'required|min:8',
-            'password_confirmation' => 'required|same:password'
+            'name' => 'required|min:4',
+            'email' => 'required',
+            'password' => 'required',
+            'telephone' => 'required'
         ];
     }
 }
