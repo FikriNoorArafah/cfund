@@ -68,7 +68,6 @@ class RegisterController extends Controller
     public function otp(Request $request)
     {
         $credentials = $request->validate([
-            'otp' => 'required',
             'email' => 'required|email',
             'name' => 'required',
             'telephone' => 'required',
