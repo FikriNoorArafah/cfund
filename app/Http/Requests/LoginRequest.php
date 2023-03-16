@@ -31,18 +31,21 @@ class LoginRequest extends FormRequest
     public function getCredentials()
     {
         $username = $this->get('username');
+        $password = $this->get('password');
 
         if ($this->isEmail($username)) {
             return [
                 'email' => $username,
-                'password' => bcrypt($this->get('password'))
+                'password' => $password
             ];
         }
+
         return [
-            'username' => $this->get('username'),
-            'password' => bcrypt($this->get('password'))
+            'username' => $username,
+            'password' => $password
         ];
     }
+
 
     private function isEmail($param)
     {

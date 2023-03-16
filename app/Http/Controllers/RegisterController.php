@@ -86,7 +86,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'telephone' => $request->telephone,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'username' => $username
         ];
 
@@ -170,7 +170,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'telephone' => $request->telephone,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'username' => $username
         ];
         $companies = Company::create($userData);
