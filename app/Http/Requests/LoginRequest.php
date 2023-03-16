@@ -43,4 +43,14 @@ class LoginRequest extends FormRequest
             'password' => bcrypt($this->get('password'))
         ];
     }
+
+    private function isEmail($param)
+    {
+        $factory = $this->container->make(ValidationFactory::class);
+
+        return !$factory->make(
+            ['username' => $param],
+            ['username' => 'email']
+        )->fails();
+    }
 }
