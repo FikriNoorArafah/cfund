@@ -23,7 +23,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     //development menu
     Route::get('show/user', 'UserController@index');
     //end dev
-    
+
     //rute web
     Route::get('/', 'LandingController@welcome');
 
@@ -40,7 +40,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('/register', [RegisterController::class, 'register']);
     Route::post('/otp', [RegisterController::class, 'otp']);
 
-    Route::post('/login', [RegisterController::class, 'login']);
+    Route::post('/login', [LoginController::class, 'login']);
 
     //rute register Company
     Route::post('/company/register', 'RegistercompanyController@register');
