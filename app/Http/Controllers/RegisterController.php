@@ -18,9 +18,9 @@ class RegisterController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['register']]);
+        $this->middleware('auth:api', ['except' => ['register', 'otp']]);
     }
-    
+
     public function register(RegisterRequest $request)
     {
         $request->validated([
