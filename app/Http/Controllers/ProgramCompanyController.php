@@ -57,13 +57,9 @@ class ProgramCompanyController extends Controller
         ]);
 
         $interest = Interest::firstOrCreate(['name' => $request->interest]);
-        $majorIds = [];
+        $level = Interest::firstOrCreate(['name' => $request->level]);
+        $major = Interest::firstOrCreate(['name' => $request->major]);
         $educationIds = [];
-
-        foreach ($request->major as $majorName) {
-            $major = Major::firstOrCreate(['name' => $majorName]);
-            $majorIds[] = $major->id;
-        }
 
         foreach ($request->education as $educationName) {
             $education = Education::where('name', $educationName)->first();
@@ -80,9 +76,11 @@ class ProgramCompanyController extends Controller
         $intern->require = $request->require;
         $intern->save();
 
-        $intern->interests()->sync($interest->id);
+        $intern->interests()->sync($interest->interest_id);
+        $intern->majors()->sync($major->major_id);
+        $intern->levels()->sync($level->level_id);
         $intern->educations()->syncWithoutDetaching($educationIds);
-        $intern->majors()->syncWithoutDetaching($majorIds);
+
 
         return response()->json([
             'message' => 'Data berhasil ditambahkan.',

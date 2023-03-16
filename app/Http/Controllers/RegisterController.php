@@ -23,23 +23,23 @@ class RegisterController extends Controller
             'password' => 'required|min:8',
         ]);
 
-        $emailExist = User::where('email', $request->email)->exists();
+        // $emailExist = User::where('email', $request->email)->exists();
 
-        if ($emailExist) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Email sudah dipakai'
-            ], 422);
-        }
+        // if ($emailExist) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Email sudah dipakai'
+        //     ], 422);
+        // }
 
-        $telephoneExist = User::where('telephone', $request->telephone)->exists();
+        // $telephoneExist = User::where('telephone', $request->telephone)->exists();
 
-        if ($telephoneExist) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Telepon sudah dipakai'
-            ], 422);
-        }
+        // if ($telephoneExist) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Telepon sudah dipakai'
+        //     ], 422);
+        // }
 
         $otp = random_int(100000, 999999);
         $emailverify = new EmailVerification();
