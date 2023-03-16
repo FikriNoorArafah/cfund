@@ -29,7 +29,7 @@ class RegisterController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Email sudah dipakai'
-            ]);
+            ], 422);
         }
 
         $telephoneExist = User::where('telephone', $request->telephone)->exists();
@@ -38,7 +38,7 @@ class RegisterController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Telepon sudah dipakai'
-            ]);
+            ], 422);
         }
 
         $otp = random_int(100000, 999999);
@@ -75,7 +75,7 @@ class RegisterController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid OTP'
-            ]);
+            ], 422);
         }
 
         $username = User::generateUsername($request->name);
