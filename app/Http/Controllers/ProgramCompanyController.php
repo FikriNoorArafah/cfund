@@ -48,17 +48,20 @@ class ProgramCompanyController extends Controller
     {
         $companies = Auth::guard('company')->user();
         $request->validate([
-            'interest' => 'required',
+            // 'interest' => 'required',
             'description' => 'nullable',
             'skill' => 'nullable',
             'level' => 'nullable',
             'education' => 'nullable|array',
-            'major' => 'nullable'
+            'major' => 'nullable',
+            'department' => 'nullable',
+            'require' => 'nullable'
         ]);
 
-        $interest = Interest::firstOrCreate(['name' => $request->interest]);
+        // $interest = Interest::firstOrCreate(['name' => $request->interest]);
         $level = Interest::firstOrCreate(['name' => $request->level]);
         $major = Interest::firstOrCreate(['name' => $request->major]);
+        $department = Interest::firstOrCreate(['name' => $request->department]);
         $educationIds = [];
 
         foreach ($request->education as $educationName) {
@@ -76,19 +79,17 @@ class ProgramCompanyController extends Controller
         $intern->require = $request->require;
         $intern->save();
 
-        $intern->interests()->sync($interest->interest_id);
+        // $intern->interests()->sync($interest->interest_id);
         $intern->majors()->sync($major->major_id);
         $intern->levels()->sync($level->level_id);
+        $intern->departments()->sync($department->department_id);
         $intern->educations()->syncWithoutDetaching($educationIds);
-
 
         return response()->json([
             'message' => 'Data berhasil ditambahkan.',
             'intern' => $intern,
         ]);
     }
-
-
 
     public function updateStatus(Request $request)
     {

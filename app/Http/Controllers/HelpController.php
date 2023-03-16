@@ -14,14 +14,16 @@ class HelpController extends Controller
         return response()->json(['helps' => $helps,]);
     }
 
-    public function user()
+    public function user(Request $request)
     {
         $helps = Help::select('question', 'answer')->take(5)->get();
         $user = Auth::user();
         return response()->json([
             'user' => [
                 'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon
+                'url_icon' => $user->url_icon,
+                'region' => $user->region,
+                'city' => $user->city,
             ],
             'helps' => $helps,
         ]);

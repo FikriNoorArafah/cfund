@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $partners = Partner::select('name', 'url_icon')->take(8)->get();
         $user = Auth::user();
@@ -38,7 +38,9 @@ class HomeController extends Controller
         return response()->json([
             'user' => [
                 'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon
+                'url_icon' => $user->url_icon,
+                'region' => $user->region,
+                'city' => $user->city,
             ],
             'partner' => $partners,
             'katamereka' => $wts,

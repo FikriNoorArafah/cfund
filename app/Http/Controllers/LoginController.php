@@ -10,21 +10,60 @@ class LoginController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $credentials = $request->getCredentials();
+        try {
+            $credentials = $request->getCredentials();
 
-        if (!Auth::validate($credentials)) {
+            if (Auth::attempt($credentials)) {
+                $user = Auth::user();
+                $request->session()->regenerateToken();
+
+                $user->remember_token = csrf_token();
+                $user->save();
+
+                $token = csrf_token();
+                $request->session()->put('user_csrf_token', $token);
+
+                return response()->json([
+                    'success' => true,
+                    'token' => $token,
+                ]);
+            } else {
+                throw new \Exception(trans('auth.failed'));
+            }
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => trans('auth.failed')
+                'message' => $e->getMessage()
             ], 422);
         }
+    }
 
-        $user = Auth::getProvider()->retrieveByCredentials($credentials);
-        Auth::login($user);
 
-        return response()->json([
-            'success' => true,
-            'csrf_token' => csrf_token()
-        ]);
+    public function company(LoginRequest $request)
+    {
+        try {
+            $credentials = $request->getCredentials();
+
+            if (auth()->guard('company')->attempt($credentials)) {
+                $companies = auth()->guard('company')->user();
+                $request->session()->regenerateToken();
+                $companies->remember_token = csrf_token();
+                $companies->save();
+
+                $token = csrf_token();
+                $request->session()->put('user_csrf_token', $token);
+                return response()->json([
+                    'success' => true,
+                    'token' => $token,
+                ]);
+            } else {
+                throw new \Exception(trans('auth.failed'));
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 422);
+        }
     }
 }

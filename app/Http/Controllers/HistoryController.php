@@ -108,7 +108,12 @@ class HistoryController extends Controller
             ];
         }
         return response()->json([
-            'user' => $user,
+            'user' => [
+                'name' => $user->name . ' ' . $user->second_name,
+                'url_icon' => $user->url_icon,
+                'region' => $user->region,
+                'city' => $user->city,
+            ],
             'history' => $history,
         ]);
     }

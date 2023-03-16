@@ -20,10 +20,7 @@ Route::get('/', function () {
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     //development menu
-    Route::get('create/department', 'DepartmentController@createTables');
-    Route::get('insert/department', 'DepartmentController@insertData');
     Route::get('show/user', 'UserController@index');
-    Route::get('create/email', 'DepartmentController@createemail');
     //end dev
 
     //end development menu
@@ -60,13 +57,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     Route::group(['middleware' => ['auth']], function () {
         //rute logout
-        Route::get('/logout', 'LogoutController@perform');
+        Route::post('/logout', 'LogoutController@logout');
 
         //rute home
-        Route::get('/home', 'HomeController@index');
+        Route::post('/home', 'HomeController@index');
 
         //help
-        Route::get('/user/help', 'HelpController@user');
+        Route::post('/user/help', 'HelpController@user');
 
         //profile
         Route::get('/profile', 'ProfileController@index');

@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
+use GrahamCampbell\ResultType\Success;
 
 class ProfileController extends Controller
 {
@@ -59,8 +59,8 @@ class ProfileController extends Controller
         $user->update($data);
 
         return response()->json([
+            'success' => true,
             'message' => 'Data user berhasil diupdate.',
-            'user' => $user,
         ]);
     }
 
@@ -83,8 +83,8 @@ class ProfileController extends Controller
         $user->save();
 
         return response()->json([
+            'success' => true,
             'message' => 'Avatar berhasil diupdate.',
-            'user' => $user->name,
             'url' => $result->getSecurePath(),
         ]);
     }
@@ -99,9 +99,8 @@ class ProfileController extends Controller
         $user->save();
 
         return response()->json([
+            'success' => true,
             'message' => 'Avatar berhasil dihapus.',
-            'user' => $user->name,
-            'url' => $user->url_icon
         ]);
     }
 }
