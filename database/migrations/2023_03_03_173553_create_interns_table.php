@@ -29,6 +29,8 @@ return new class extends Migration
                 'status' => 'Started',
                 'skill' => 'HTML, CSS, JavaScript',
                 'require' => 'Experience with web development',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'description' => 'We are seeking an intern to help with our social media marketing efforts. Must have experience with Facebook Ads and Google Analytics.',
@@ -36,6 +38,8 @@ return new class extends Migration
                 'status' => 'Open',
                 'skill' => 'Facebook Ads, Google Analytics',
                 'require' => 'Experience with social media marketing',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'description' => 'Frontend web developer internship',
@@ -43,6 +47,8 @@ return new class extends Migration
                 'status' => 'Open',
                 'skill' => 'HTML, CSS, JavaScript',
                 'require' => 'Currently enrolled in a relevant course',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'description' => 'Marketing intern',
@@ -50,6 +56,8 @@ return new class extends Migration
                 'status' => 'Open',
                 'skill' => 'Social media, Google Ads, copywriting',
                 'require' => 'Strong written and verbal communication skills',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'description' => 'Data science intern',
@@ -57,7 +65,8 @@ return new class extends Migration
                 'status' => 'Open',
                 'skill' => 'Python, SQL, machine learning',
                 'require' => 'Experience with data analysis tools',
-                'created_at' => now(),        'updated_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'description' => 'Backend developer internship',
@@ -65,6 +74,8 @@ return new class extends Migration
                 'status' => 'Open',
                 'skill' => 'PHP, MySQL, Laravel',
                 'require' => 'Experience with web development frameworks',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'description' => 'Graphic design intern',
@@ -72,6 +83,8 @@ return new class extends Migration
                 'status' => 'Open',
                 'skill' => 'Adobe Photoshop, Illustrator, InDesign',
                 'require' => 'Experience with graphic design software',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'description' => 'Content writing intern',
@@ -79,6 +92,8 @@ return new class extends Migration
                 'status' => 'Open',
                 'skill' => 'Copywriting, SEO, blog writing',
                 'require' => 'Strong written and verbal communication skills',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }

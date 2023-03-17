@@ -14,7 +14,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('educations')->insert([
+        DB::table('levels')->insert([
             ['name' => 'SD'],
             ['name' => 'SMP'],
             ['name' => 'SMA'],
