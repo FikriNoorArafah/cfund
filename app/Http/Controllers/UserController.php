@@ -15,10 +15,6 @@ use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
     public function home(Request $request)
     {
         $partners = Partner::select('name', 'url_icon')->take(8)->get();
