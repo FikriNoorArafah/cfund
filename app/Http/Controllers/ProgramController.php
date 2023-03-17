@@ -10,7 +10,7 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProgramController extends Controller
 {
-    public function index()
+    public function program()
     {
         $intern = Intern::join('companies', 'interns.company_id', '=', 'companies.company_id')
             ->join('intern_majors', 'interns.intern_id', '=', 'intern_majors.intern_id')

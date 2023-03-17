@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserActionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,97 +17,82 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-
-Route::get('/', function () {
-    return view('welcome');
-});
 */
 
+
+//register
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/otp', [RegisterController::class, 'otp']);
 
+//login
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::group(['namespace' => 'App\Http\Controllers'], function () {
+//lupapassword
+Route::post('/reset', 'ForgotPasswordController@sendResetLinkEmail');
+Route::post('/resetotp', 'ForgotPasswordController@otp');
+Route::post('/resetpassword', 'ForgotPasswordController@reset');
 
-    //development menu
-    Route::get('show/user', 'UserController@index');
-    //end dev
+//Guest Routes
+Route::get('/', [GuestController::class, 'welcome']);
+Route::get('/landing', [GuestController::class, 'landing']);
+Route::get('/about', [GuestController::class, 'about']);
+Route::get('/help', [GuestController::class, 'help']);
 
-    //rute web
-    Route::get('/', 'LandingController@welcome');
+//rute register Company
+Route::post('/company/register', 'RegistercompanyController@register');
 
-    //rute landing
-    Route::get('/landing', 'LandingController@index');
+//rute login Company
+Route::post('/company/login', 'LogincompanyController@login');
 
-    //rute about
-    Route::get('/about', 'AboutController@index');
+Route::middleware(['auth.jwt'])->group(function () {
+    //User Routes
+    Route::get('/user/home', [UserController::class, 'home']);
+    Route::get('/user/logout', [LogoutController::class, 'user']);
+    Route::get('/user/help', [UserController::class, 'help']);
 
-    //rute help
-    Route::get('/help', 'HelpController@index');
+    //profile
+    Route::get('/user/profile', [UserController::class, 'profile']);
 
-    //rute register
+    Route::post('/user/profile/update', [UserActionController::class, 'profileUpdate']);
+    Route::post('/user/avatar/upload', [UserActionController::class, 'updateAvatar']);
+    Route::post('/user/avatar/delete', [UserActionController::class, 'deleteAvatar']);
 
+    //history
+    Route::get('/user/history', [UserController::class, 'history']);
+    Route::get('/user/history/selection', [UserController::class, 'historySelection']);
+    Route::get('/user/history/accepted', [UserController::class, 'historyAccepted']);
+    Route::get('/user/history/rejected', [UserController::class, 'historyRejected']);
+    Route::get('/user/history/success', [UserController::class, 'historySuccess']);
 
-    //rute register Company
-    Route::post('/company/register', 'RegistercompanyController@register');
+    //program action
+    Route::post('/user/upload/kontrak', [UserActionController::class, 'uploadContract']);
+    Route::post('/user/upload/summary', [UserActionController::class, 'uploadSummary']);
+    //program
+    Route::get('/user/program', [UserController::class, 'program']);
+    Route::post('/user/participate', [UserActionController::class, 'participate']);
 
-    //rute login Company
-    Route::post('/company/login', 'LogincompanyController@login');
+    //Perusahaan Routes
+    //home
+    Route::get('/company', 'CompanyController@index');
+    Route::get('/company/logout', 'LogoutController@company');
 
-    //rute lupa password
-    Route::post('/forgotpassword', 'ForgotPasswordController@sendResetLinkEmail');
-    Route::post('/lupaotp', 'ForgotPasswordController@otp');
-    Route::post('/resetpassword', 'ForgotPasswordController@reset');
+    //show program and editing
+    Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');
+    Route::post('/company/program/status', 'ProgramCompanyController@updateStatus')->name('companyprogram.status');
+    Route::post('/company/program/delete', 'ProgramCompanyController@delete')->name('companyprogram.delete');
+    Route::post('/company/program/insert', 'ProgramCompanyController@insert')->name('companyprogram.participate');
 
-    Route::middleware(['auth.jwt'])->group(function () {
-        //rute logout
-        Route::post('/logout', 'LogoutController@logout');
+    //show participant and editing
+    Route::get('/company/participant', 'ParticipantController@index')->name('company.participant');
+    Route::post('/company/participant/update', 'ParticipantController@update')->name('companyparticipant.update');
 
-        //rute home
-        Route::post('/home', 'HomeController@index');
+    //show financial particantp and editing
+    Route::get('/company/financing', 'FinancingController@index');
+    Route::post('/company/financing/detail', 'FinancingController@detail');
+    Route::post('/company/payment', 'FinancingController@payment');
+    //Route::post('/company/financing/update', 'FinancingController@update')->name('companyfinancing.update');
 
-        //help
-        Route::post('/user/help', 'HelpController@user');
-
-        //profile
-        Route::get('/profile', 'ProfileController@index');
-        Route::post('/profile/update', 'ProfileController@update');
-        Route::post('/profile/avatar/upload', 'ProfileController@updateAvatar');
-        Route::post('/profile/avatar/delete', 'ProfileController@deleteAvatar');
-
-        //history
-        Route::get('/history', 'HistoryController@index');
-        Route::get('/history/selection', 'HistoryController@selection');
-        Route::get('/history/accepted', 'HistoryController@accepted');
-        Route::get('/history/rejected', 'HistoryController@rejected');
-        Route::get('/history/success', 'HistoryController@success');
-
-        //program
-        Route::get('/program', 'ProgramController@index');
-        Route::post('/program/participate', 'ProgramController@participate');
-        //home
-        Route::get('/company', 'CompanyController@index');
-        Route::get('/company/logout', 'LogoutController@company');
-
-        //show program and editing
-        Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');
-        Route::post('/company/program/status', 'ProgramCompanyController@updateStatus')->name('companyprogram.status');
-        Route::post('/company/program/delete', 'ProgramCompanyController@delete')->name('companyprogram.delete');
-        Route::post('/company/program/insert', 'ProgramCompanyController@insert')->name('companyprogram.participate');
-
-        //show participant and editing
-        Route::get('/company/participant', 'ParticipantController@index')->name('company.participant');
-        Route::post('/company/participant/update', 'ParticipantController@update')->name('companyparticipant.update');
-
-        //show financial particantp and editing
-        Route::get('/company/financing', 'FinancingController@index');
-        Route::post('/company/financing/detail', 'FinancingController@detail');
-        Route::post('/company/payment', 'FinancingController@payment');
-        //Route::post('/company/financing/update', 'FinancingController@update')->name('companyfinancing.update');
-
-        //company profile editing
-        Route::get('/company/profile', 'CompanyProfileController@index')->name('company.profile');
-        Route::post('/company/profile/update', 'CompanyProfileController@update')->name('companyprofile.update');
-    });
+    //company profile editing
+    Route::get('/company/profile', 'CompanyProfileController@index')->name('company.profile');
+    Route::post('/company/profile/update', 'CompanyProfileController@update')->name('companyprofile.update');
 });

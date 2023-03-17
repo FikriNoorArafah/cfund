@@ -9,4 +9,6 @@ class EmailVerification extends Model
 {
     use HasFactory;
     protected $table = 'email_verifications';
+
+    protected $fillable = ['email', 'token', 'created_at'];
 }
