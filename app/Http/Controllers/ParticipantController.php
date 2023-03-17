@@ -12,41 +12,45 @@ class ParticipantController extends Controller
     public function index()
     {
         $companies = Auth::guard('company')->user();
-        $participant = $participants = Participant::join('interns', 'interns.intern_id', '=', 'participants.intern_id')
-            ->join('users', 'users.user_id', '=', 'participants.user_id')
-            ->where('interns.company_id', '=', $companies->company_id)
-            ->where('participants.status', 'selection')
-            ->select('users.name', 'users.second_name', 'participants.*')
-            ->get();
-        $totalParticipants = $participant->count();
-        return response()([
-            'company' => $companies,
-            'totalParticipant' => $totalParticipants,
-            'participant' => $participant,
-        ]);
+        $participants = Participant::with('majors')
+            ->whereHas('interns', function ($query) use ($companies) {
+                $query->where('company_id', $companies->company_id);
+            })
+            ->where('status', 'selection')
+            ->get(['participant_id', 'user_id', 'schedule', 'place', 'status']);
+
+        return response()->json(['participant' => $participants]);
     }
 
     public function update(Request $request)
     {
-        $request->validate([
-            'participant_id' => 'required|integer',
-            'schedule' => 'nullable|string|max:255',
-            'place' => 'nullable|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'participant_id' => 'required',
+                'schedule' => 'nullable',
+                'place' => 'nullable',
+                'status' => 'required',
+            ]);
 
-        $participant = Participant::find($request->participant_id);
-        if (!$participant) {
-            return response()([
+            $participant = Participant::find($request->participant_id);
+            if (!$participant) {
+                throw new \Exception('Participant not found.');
+            }
+
+            $participant->schedule = $request->schedule;
+            $participant->place = $request->place;
+            $participant->status = $request->status;
+            $participant->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'berhasil update',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
                 'success' => false,
+                'message' => $e->getMessage(),
             ]);
         }
-
-        $participant->schedule = $request->schedule;
-        $participant->place = $request->place;
-        $participant->save();
-
-        return response()([
-            'success' => true,
-        ]);
     }
 }

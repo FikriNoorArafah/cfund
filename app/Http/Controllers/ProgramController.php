@@ -32,10 +32,19 @@ class ProgramController extends Controller
                     'jurusan' => $intern->departments->pluck('name'),
                 ];
             });
+
+        if ($interns->isEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Kamu belum memilki program',
+            ]);
+        }
+
         return response()->json([
             'interns' => $interns,
         ]);
     }
+
     public function insert(Request $request)
     {
         try {

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('intern_majors')->insert(
+        DB::table('intern_majors')->insert([
             [
                 'intern_id' => '1',
                 'major_id' => '1',
@@ -52,7 +52,7 @@ return new class extends Migration
                 'intern_id' => '8',
                 'major_id' => '5',
             ],
-        );
+        ]);
     }
 
     /**

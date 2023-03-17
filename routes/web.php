@@ -6,6 +6,8 @@ use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserActionController;
 use App\Http\Controllers\UserController;
@@ -73,7 +75,7 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('/user/upload/kontrak', [UserActionController::class, 'uploadContract']);
     Route::post('/user/upload/summary', [UserActionController::class, 'uploadSummary']);
 
-    //program
+    //program   
     Route::get('/user/program', [UserController::class, 'program']);
     Route::post('/user/participate', [UserActionController::class, 'participate']);
 
@@ -84,26 +86,26 @@ Route::middleware(['auth.jwt'])->group(function () {
 
     //program
     Route::get('/company/program', [ProgramController::class, 'company']);
-    Route::patch('/company/update/{id}', [CompanyController::class, 'update']);
-    Route::post('/company/program/stop', [CompanyController::class, 'stop']);
-    Route::post('/company/program/start', [CompanyController::class, 'start']);
-    Route::post('/company/program/delete', [CompanyController::class, 'delete']);
-    Route::post('/company/program/insert', [CompanyController::class, 'insert']);
+    Route::patch('/company/update/{id}', [ProgramController::class, 'update']);
+    Route::post('/company/program/stop', [ProgramController::class, 'stop']);
+    Route::post('/company/program/start', [ProgramController::class, 'start']);
+    Route::post('/company/program/delete', [ProgramController::class, 'delete']);
+    Route::post('/company/program/insert', [ProgramController::class, 'insert']);
 
     //show participant and editing
-    Route::get('/company/participant', 'ParticipantController@index')->name('company.participant');
-    Route::post('/company/participant/update', 'ParticipantController@update')->name('companyparticipant.update');
+    Route::get('/company/participant', [ParticipantController::class, 'index']);
+    Route::post('/company/participant/update', [ParticipantController::class, 'update']);
 
     //show financial particantp and editing
     Route::get('/company/financing', 'FinancingController@index');
     Route::post('/company/financing/detail', 'FinancingController@detail');
     Route::post('/company/payment', 'FinancingController@payment');
-    //Route::post('/company/financing/update', 'FinancingController@update')->name('companyfinancing.update');
+    //Route::post('/company/financing/update', 'FinancingController@update');
 
     //company profile editing
     Route::get('/company/profile', [CompanyController::class, 'profile']);
 
     Route::post('/company/profile/update', [CompanyActionController::class, 'profileUpdate']);
-    Route::post('/company/avatar/upload', [UserActionController::class, 'updateAvatar']);
-    Route::post('/company/avatar/delete', [UserActionController::class, 'deleteAvatar']);
+    Route::post('/company/avatar/upload', [CompanyActionController::class, 'updateAvatar']);
+    Route::post('/company/avatar/delete', [CompanyActionController::class, 'deleteAvatar']);
 });

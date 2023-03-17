@@ -13,12 +13,17 @@ class Participant extends Model
 
     public function users()
     {
-        return $this->belongsTo(User::class, 'user_id') ;
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function interns()
     {
         return $this->belongsTo(Intern::class, 'intern_id');
+    }
+
+    public function majors()
+    {
+        return $this->intern->majors();
     }
 
     public function semesters()
