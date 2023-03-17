@@ -23,8 +23,30 @@ return new class extends Migration
         });
 
         DB::table('semesters')->insert([
-            'participant_id' => 3,
-            'semester_number' => 1,
+            [
+                'participant_id' => 1,
+                'semester_number' => 1,
+                'payment_amount' => 2000000,
+                'payment_id' => 'inipembayarantiputipu',
+            ],
+            [
+                'participant_id' => 1,
+                'semester_number' => 2,
+                'payment_amount' => 2500000,
+                'payment_id' => 'inipembayarantiputipu',
+            ],
+            [
+                'participant_id' => 1,
+                'semester_number' => 3,
+                'payment_amount' => 2800000,
+                'payment_id' => 'inipembayarantiputipu',
+            ],
+            [
+                'participant_id' => 2,
+                'semester_number' => 1,
+                'payment_amount' => 2000000,
+                'payment_id' => 'inipembayarantiputipu',
+            ],
         ]);
     }
 

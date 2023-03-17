@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
 
 class ForgotPasswordController extends Controller
 {
-    public function sendResetLinkEmail(Request $request)
+    public function sendEmail(Request $request)
     {
         $request->validate([
             'email' => 'required|email',

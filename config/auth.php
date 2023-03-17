@@ -48,8 +48,9 @@ return [
         ],
 
         'company' => [
-            'driver' => 'session',
+            'driver' => 'jwt',
             'provider' => 'companies',
+            'hash' => false,
         ],
     ],
 

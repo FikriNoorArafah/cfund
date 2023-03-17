@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Company extends Model implements \Illuminate\Contracts\Auth\Authenticatable
+class Company extends Authenticatable implements JWTSubject
 {
-    use HasFactory, HasFactory, Notifiable, Authenticatable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'companies';
     protected $primaryKey = 'company_id';
@@ -23,6 +22,9 @@ class Company extends Model implements \Illuminate\Contracts\Auth\Authenticatabl
         'username',
         'url_icon',
         'password',
+        'city',
+        'region',
+        'postal',
     ];
 
     public static function generateUsername(string $name): string
@@ -41,5 +43,15 @@ class Company extends Model implements \Illuminate\Contracts\Auth\Authenticatabl
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

@@ -18,9 +18,13 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('majors')->insert([
-            'name' => 'Full Stack Developer'
-        ]);
+        DB::table('majors')->insert(
+            ['name' => 'Front End Developer'],
+            ['name' => 'Back End Developer'],
+            ['name' => 'Data Science'],
+            ['name' => 'Graphic Design'],
+            ['name' => 'Content Creator'],
+        );
     }
 
     /**

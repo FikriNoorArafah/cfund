@@ -20,6 +20,11 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
         });
+        DB::table('user_payments')->insert([
+            'user_id' => 1,
+            'type' => 'Gopay',
+            'credit_number' => '085251211223',
+        ]);
     }
 
     /**

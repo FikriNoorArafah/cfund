@@ -15,14 +15,36 @@ return new class extends Migration
             $table->id('wts_id');
             $table->string('name');
             $table->string('position');
-            $table->text('comment');
+            $table->text('quote');
             $table->timestamps();
         });
 
         DB::table('whattheysays')->insert([
-            'name' => 'John doe',
-            'position' => 'Google Front End Developer',
-            'comment' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+            [
+                'name' => 'John doe',
+                'position' => 'Google Front End Developer',
+                'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+            ],
+            [
+                'name' => 'John doe',
+                'position' => 'Google Front End Developer',
+                'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+            ],
+            [
+                'name' => 'John doe',
+                'position' => 'Google Front End Developer',
+                'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+            ],
+            [
+                'name' => 'John doe',
+                'position' => 'Google Front End Developer',
+                'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+            ],
+            [
+                'name' => 'John doe',
+                'position' => 'Google Front End Developer',
+                'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+            ]
         ]);
     }
 

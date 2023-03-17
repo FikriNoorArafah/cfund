@@ -18,12 +18,38 @@ return new class extends Migration
             $table->timestamps();
         });
         DB::table('partners')->insert([
-            'name' => 'Facebook',
-            'url_icon' => 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.hGaetDAQWapgIJbIOhPhXwHaHa%26pid%3DApi&f=1&ipt=aa022992fa87a14ac3ec1bf230fa2bdd7d7462ff628d3c5464a9cb4882ee1754&ipo=images',
-        ]);
-        DB::table('partners')->insert([
-            'name' => 'Twitter',
-            'url_icon' => 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F1000logos.net%2Fwp-content%2Fuploads%2F2017%2F06%2FTwitter-Logo.png&f=1&nofb=1&ipt=0f218baebb0b619c49612cc5fab5600c97f999a5507d768c5470499acce68763&ipo=images',
+            [
+                'name' => 'Uber',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046088/careerfund/asset/Uber_b7pvgb.svg',
+            ],
+            [
+                'name' => 'Tesla',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046088/careerfund/asset/Tesla_hk7xum.svg',
+            ],
+            [
+                'name' => 'Meta',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046087/careerfund/asset/Meta_c4noqy.svg',
+            ],
+            [
+                'name' => 'Samsung',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046087/careerfund/asset/Samsung_kv7w44.svg',
+            ],
+            [
+                'name' => 'Google',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046086/careerfund/asset/Google_qqxcfe.svg',
+            ],
+            [
+                'name' => 'Amazon',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046086/careerfund/asset/Amazon_homfh9.svg',
+            ],
+            [
+                'name' => 'Microsoft',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046086/careerfund/asset/Microsoft_uie9d2.svg',
+            ],
+            [
+                'name' => 'Apple',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046086/careerfund/asset/Apple_qt76cv.svg',
+            ]
         ]);
     }
 

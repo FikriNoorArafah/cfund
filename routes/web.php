@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -21,11 +22,14 @@ use Illuminate\Support\Facades\Route;
 
 
 //register
-Route::post('/register', [RegisterController::class, 'register']);
-Route::post('/otp', [RegisterController::class, 'otp']);
+Route::post('/register', [RegisterController::class, 'registerUser']);
+Route::post('/otp', [RegisterController::class, 'otpUser']);
+Route::post('/company/register', [RegisterController::class, 'registerCompany']);
+Route::post('/company/otp', [RegisterController::class, 'otpCompany']);
 
 //login
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'loginUser']);
+Route::post('/company/login', [LoginController::class, 'loginCompany']);
 
 //lupapassword
 Route::post('/reset', 'ForgotPasswordController@sendResetLinkEmail');
@@ -33,20 +37,14 @@ Route::post('/resetotp', 'ForgotPasswordController@otp');
 Route::post('/resetpassword', 'ForgotPasswordController@reset');
 
 //Guest Routes
-Route::get('/', [GuestController::class, 'welcome']);
+Route::get('/', [GuestController::class, 'welcome'])->name('login');
 Route::get('/landing', [GuestController::class, 'landing']);
 Route::get('/about', [GuestController::class, 'about']);
 Route::get('/help', [GuestController::class, 'help']);
 
-//rute register Company
-Route::post('/company/register', 'RegistercompanyController@register');
-
-//rute login Company
-Route::post('/company/login', 'LogincompanyController@login');
-
 Route::middleware(['auth.jwt'])->group(function () {
     //User Routes
-    Route::get('/user', [UserController::class, 'home']);
+    Route::get('/home', [UserController::class, 'home']);
     Route::get('/user/logout', [LogoutController::class, 'user']);
     Route::get('/user/help', [UserController::class, 'help']);
 
@@ -75,8 +73,8 @@ Route::middleware(['auth.jwt'])->group(function () {
 
     //Perusahaan Routes
     //home
-    Route::get('/company', 'CompanyController@index');
-    Route::get('/company/logout', 'LogoutController@company');
+    Route::get('/company', [CompanyController::class, 'index']);
+    Route::get('/company/logout', [LogoutController::class, 'company']);
 
     //show program and editing
     Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');

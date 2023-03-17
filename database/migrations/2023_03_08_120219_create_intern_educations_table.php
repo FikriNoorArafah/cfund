@@ -20,8 +20,50 @@ return new class extends Migration
         });
 
         DB::table('intern_educations')->insert([
-            'intern_id' => 1,
-            'education_id' => 2
+            [
+                'intern_id' => 1,
+                'education_id' => 5
+            ],
+            [
+                'intern_id' => 2,
+                'education_id' => 7
+            ],
+            [
+                'intern_id' => 3,
+                'education_id' => 7
+            ],
+            [
+                'intern_id' => 3,
+                'education_id' => 8
+            ],
+            [
+                'intern_id' => 4,
+                'education_id' => 5
+            ],
+            [
+                'intern_id' => 5,
+                'education_id' => 5
+            ],
+            [
+                'intern_id' => 5,
+                'education_id' => 6
+            ],
+            [
+                'intern_id' => 6,
+                'education_id' => 5
+            ],
+            [
+                'intern_id' => 7,
+                'education_id' => 5
+            ],
+            [
+                'intern_id' => 7,
+                'education_id' => 6
+            ],
+            [
+                'intern_id' => 8,
+                'education_id' => 6
+            ],
         ]);
     }
 

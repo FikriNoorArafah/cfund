@@ -19,10 +19,40 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('intern_majors')->insert([
-            'intern_id' => '1',
-            'major_id' => '1',
-        ]);
+        DB::table('intern_majors')->insert(
+            [
+                'intern_id' => '1',
+                'major_id' => '1',
+            ],
+            [
+                'intern_id' => '2',
+                'major_id' => '5',
+            ],
+            [
+                'intern_id' => '3',
+                'major_id' => '1',
+            ],
+            [
+                'intern_id' => '4',
+                'major_id' => '3',
+            ],
+            [
+                'intern_id' => '5',
+                'major_id' => '5',
+            ],
+            [
+                'intern_id' => '6',
+                'major_id' => '2',
+            ],
+            [
+                'intern_id' => '7',
+                'major_id' => '4',
+            ],
+            [
+                'intern_id' => '8',
+                'major_id' => '5',
+            ],
+        );
     }
 
     /**

@@ -25,17 +25,22 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('postal')->nullable();
             $table->string('education')->nullable();
-            $table->rememberToken();
+            $table->text('rememberToken')->nullable();
             $table->timestamps();
         });
 
         DB::table('users')->insert([
-            'name' => 'user',
-            'email' => 'user@careerfund.com',
+            'name' => 'Frankie',
+            'second_name' => 'Tobias',
+            'email' => 'FrankieTobias@careerfund.com',
             'telephone' => '081234567890',
-            'username' => 'user',
-            'url_icon' => 'https://oduvbujtzradsetbgtxm.supabase.co/storage/v1/object/sign/src/Logo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJzcmMvTG9nby5wbmciLCJpYXQiOjE2NzgzNTQ5NDAsImV4cCI6MTcwOTg5MDk0MH0.xa8ZHdGdQz5xLalc80MKYg0mdydYn4hz3dwPOPYWMjs&t=2023-03-09T09%3A42%3A24.512Z',
-            'password' => bcrypt('user'),
+            'username' => 'FrankieTobias',
+            'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046798/careerfund/user/male_portrait_profile_social_media_cv_young_elegant_suit-459413_bperfh.jpg',
+            'password' => bcrypt('Frankie123'),
+            'region' => 'Indonesia',
+            'city' => 'Jakarta',
+            'postal' => '15324',
+            'education' => 'S1',
         ]);
     }
 

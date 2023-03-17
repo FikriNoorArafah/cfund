@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('participant_id');
             $table->string('name');
             $table->unsignedBigInteger('semester_id')->nullable();
-            $table->text('description')->nullable();
             $table->text('summary_url')->nullable();
             $table->boolean('verified')->default(false);
             $table->timestamps();
@@ -25,9 +24,36 @@ return new class extends Migration
             $table->foreign('participant_id')->references('participant_id')->on('participants')->onDelete('cascade');
         });
         DB::table('tasks')->insert([
-            'participant_id' => 3,
-            'name' => 'Belajar Laravel',
-            'semester_id' => 1,
+            [
+                'participant_id' => 1,
+                'name' => 'Belajar Laravel',
+                'semester_id' => 1,
+            ],
+            [
+                'participant_id' => 1,
+                'name' => 'Login register Laravel',
+                'semester_id' => 1,
+            ],
+            [
+                'participant_id' => 1,
+                'name' => 'Routes Laravel',
+                'semester_id' => 1,
+            ],
+            [
+                'participant_id' => 1,
+                'name' => 'CRUD Laravel',
+                'semester_id' => 2,
+            ],
+            [
+                'participant_id' => 1,
+                'name' => 'Simple Franchise Web',
+                'semester_id' => 3,
+            ],
+            [
+                'participant_id' => 2,
+                'name' => 'Belajar Marketing',
+                'semester_id' => 1,
+            ],
         ]);
     }
 

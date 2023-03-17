@@ -28,31 +28,24 @@ return new class extends Migration
         });
 
         DB::table('participants')->insert([
-            'user_id' => 1,
-            'intern_id' => 1,
-            'cv_url' => 'empty',
-            'status' => 'success'
-        ]);
-
-        DB::table('participants')->insert([
-            'user_id' => 1,
-            'intern_id' => 1,
-            'cv_url' => 'empty',
-            'status' => 'rejected'
-        ]);
-
-        DB::table('participants')->insert([
-            'user_id' => 1,
-            'intern_id' => 1,
-            'cv_url' => 'empty',
-            'status' => 'accepted'
-        ]);
-
-        DB::table('participants')->insert([
-            'user_id' => 1,
-            'intern_id' => 1,
-            'cv_url' => 'empty',
-            'status' => 'selection'
+            [
+                'user_id' => 1,
+                'intern_id' => 1,
+                'schedule' => '14 Januari 2022',
+                'place' => 'Zoom',
+                'cv_url' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679056564/careerfund/cv/PM_Baidouwi_Hakim_CV_g6kemp.pdf',
+                'status' => 'success',
+                'contract_url' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679056608/careerfund/contract/kontrak_kerja_w6limi.pdf',
+            ],
+            [
+                'user_id' => 1,
+                'intern_id' => 2,
+                'schedule' => '23 Januari 2023',
+                'place' => 'Zoom',
+                'cv_url' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679056564/careerfund/cv/PM_Baidouwi_Hakim_CV_g6kemp.pdf',
+                'status' => 'accepted',
+                'contract_url' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679056608/careerfund/contract/kontrak_kerja_w6limi.pdf',
+            ]
         ]);
     }
 

@@ -24,11 +24,11 @@ class LogoutController extends Controller
         ]);
     }
 
-    public function company()
+    public function company(Request $request)
     {
         $companies = Auth::guard('company')->user();
-        $companies->remember_token = null;
-        $companies->save();
+        $request->session()->invalidate();
+        $companies->tokens()->delete();
 
         Session::flush();
         Auth::logout();

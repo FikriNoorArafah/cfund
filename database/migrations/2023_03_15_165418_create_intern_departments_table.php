@@ -22,6 +22,13 @@ return new class extends Migration
 
         DB::table('intern_departments')->insert([
             ['intern_id' => 1, 'department_id' => 1],
+            ['intern_id' => 2, 'department_id' => 1],
+            ['intern_id' => 3, 'department_id' => 1],
+            ['intern_id' => 4, 'department_id' => 1],
+            ['intern_id' => 5, 'department_id' => 1],
+            ['intern_id' => 6, 'department_id' => 1],
+            ['intern_id' => 7, 'department_id' => 1],
+            ['intern_id' => 8, 'department_id' => 1],
         ]);
     }
 

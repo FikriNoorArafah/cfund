@@ -19,19 +19,19 @@ class UserActionController extends Controller
             $user = Auth::user();
 
             $request->validate([
+                'user_id' => 'required',
                 'intern_id' => 'required',
                 'cv' => 'required|mimes:pdf|max:2048',
             ]);
 
             $result = Cloudinary::upload($request->file('cv')->getPathname(), [
-                'resource_type' => 'raw',
                 'folder' => 'careerfund/cv',
-                'public_id' => uniqid(),
+                'public_id' => 'cv' . uniqid(),
             ]);
 
             $participant = new Participant();
             $participant->intern_id = $request->intern_id;
-            $participant->user_id = $user->user_id;
+            $participant->user_id = $request->user_id;
             $participant->cv_url = $result->getSecurePath();
             $participant->status = 'selection';
             $participant->save();
@@ -59,9 +59,8 @@ class UserActionController extends Controller
             ]);
 
             $result = Cloudinary::upload($request->file('contract')->getPathname(), [
-                'resource_type' => 'raw',
                 'folder' => 'careerfund/contract',
-                'public_id' => uniqid(),
+                'public_id' => 'contract' . uniqid(),
             ]);
 
             $participant = Participant::findOrFail($request->participant_id);
@@ -80,7 +79,6 @@ class UserActionController extends Controller
         }
     }
 
-
     public function uploadSummary(Request $request)
     {
         try {
@@ -92,9 +90,8 @@ class UserActionController extends Controller
             ]);
 
             $result = Cloudinary::upload($request->file('contract')->getPathname(), [
-                'resource_type' => 'raw',
                 'folder' => 'careerfund/summary',
-                'public_id' => uniqid(),
+                'public_id' => 'summary' . uniqid(),
             ]);
 
             $task = Task::findOrFail($request->task_id);
@@ -175,7 +172,6 @@ class UserActionController extends Controller
             'message' => 'Data user berhasil diupdate.',
         ]);
     }
-
 
     public function updateAvatar(Request $request)
     {

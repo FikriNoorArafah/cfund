@@ -22,21 +22,62 @@ return new class extends Migration
             $table->string('region')->nullable();
             $table->string('city')->nullable();
             $table->string('postal')->nullable();
-            $table->string('detail')->nullable();
             $table->text('url_icon')->nullable();
+            $table->text('rememberToken')->nullable();
             $table->timestamps();
         });
 
         DB::table('companies')->insert([
-            'name' => 'Facebook',
-            'email' => 'Facebook@careerfund.com',
-            'username' => 'Facebook',
-            'password' => bcrypt('Facebook'),
-            'region' => 'usa',
-            'city' => 'new york',
-            'postal' => '23415',
-            'detail' => 'by meta',
-            'url_icon' => 'https://oduvbujtzradsetbgtxm.supabase.co/storage/v1/object/sign/src/Logo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJzcmMvTG9nby5wbmciLCJpYXQiOjE2NzgwMzUzMTMsImV4cCI6MTcwOTU3MTMxM30.n_ccn8nTcp8HA4ORIewNyk1yr4huHsyfbtyivLpO3KM&t=2023-03-05T16%3A55%3A14.087Z',
+            [
+                'name' => 'Facebook',
+                'email' => 'Facebook@careerfund.com',
+                'username' => 'Facebook',
+                'password' => bcrypt('Facebook'),
+                'region' => 'USA',
+                'city' => 'NEW YORK',
+                'postal' => '23415',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679053252/careerfund/company/Facebook_WC_uy8nos.svg',
+            ],
+            [
+                'name' => 'Twitter',
+                'email' => 'Twitter@careerfund.com',
+                'username' => 'Twitter',
+                'password' => bcrypt('Twitter'),
+                'region' => 'USA',
+                'city' => 'NEW YORK',
+                'postal' => '23415',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679053252/careerfund/company/Twitter_WC_o7vpt0.svg',
+            ],
+            [
+                'name' => 'Google',
+                'email' => 'Google@careerfund.com',
+                'username' => 'Google',
+                'password' => bcrypt('Google'),
+                'region' => 'USA',
+                'city' => 'NEW YORK',
+                'postal' => '23415',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679053252/careerfund/company/Google_WC_sctd3w.svg',
+            ],
+            [
+                'name' => 'Spotify',
+                'email' => 'Spotify@careerfund.com',
+                'username' => 'Spotify',
+                'password' => bcrypt('Spotify'),
+                'region' => 'USA',
+                'city' => 'NEW YORK',
+                'postal' => '23415',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679053252/careerfund/company/Spotify_WC_h1sxch.svg',
+            ],
+            [
+                'name' => 'Paypal',
+                'email' => 'Paypal@careerfund.com',
+                'username' => 'Paypal',
+                'password' => bcrypt('Paypal'),
+                'region' => 'USA',
+                'city' => 'NEW YORK',
+                'postal' => '23415',
+                'url_icon' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679053252/careerfund/company/PayPal_1_WC_sxrpzq.svg',
+            ]
         ]);
     }
 

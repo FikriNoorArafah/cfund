@@ -10,16 +10,14 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class LoginController extends Controller
 {
-
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['loginUser', 'loginCompany']]);
     }
-    public function login(LoginRequest $request)
+    public function loginUser(LoginRequest $request)
     {
         try {
             $credentials = $request->getCredentials();
-
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
                 $token = auth()->attempt($credentials);
@@ -38,16 +36,14 @@ class LoginController extends Controller
         }
     }
 
-
-    public function company(LoginRequest $request)
+    public function loginCompany(LoginRequest $request)
     {
         try {
             $credentials = $request->getCredentials();
-
             if (auth()->guard('company')->attempt($credentials)) {
                 $companies = auth()->guard('company')->user();
                 $request->session()->regenerateToken();
-                $token = auth()->attempt($credentials);
+                $token = auth()->guard('company')->attempt($credentials);
                 return response()->json([
                     'success' => true,
                     'token' => $token,

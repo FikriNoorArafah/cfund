@@ -13,7 +13,7 @@ class CompanyController extends Controller
     {
         $companies = Auth::guard('company')->user();
 
-        $interns = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels', 'departments'])
+        $interns = Intern::with(['companies', 'majors', 'educations', 'levels', 'departments'])
             ->where('interns.company_id', $companies->company_id)
             ->withCount('participants')
             ->get();
@@ -36,7 +36,6 @@ class CompanyController extends Controller
                 'company' => $program->companies->name,
                 'region' => $program->companies->region,
                 'city' => $program->companies->city,
-                'kategori' => $program->interests->pluck('name')->first(),
                 'education' => $program->educations->pluck('name'),
                 'department' => $program->departments->pluck('name')->first(),
                 'level' => $program->levels->pluck('name')->first(),

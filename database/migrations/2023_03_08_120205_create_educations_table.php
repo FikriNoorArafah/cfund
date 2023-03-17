@@ -14,58 +14,20 @@ return new class extends Migration
         Schema::create('educations', function (Blueprint $table) {
             $table->id('education_id');
             $table->string('name')->unique();
-            $table->decimal('power');
             $table->timestamps();
         });
 
         DB::table('educations')->insert([
-            'name' => 'SD',
-            'power' => '10',
-        ]);
-
-        DB::table('educations')->insert([
-            'name' => 'SMP',
-            'power' => '20',
-        ]);
-
-        DB::table('educations')->insert([
-            'name' => 'SMA',
-            'power' => '30',
-        ]);
-
-        DB::table('educations')->insert([
-            'name' => 'SMK',
-            'power' => '30',
-        ]);
-
-        DB::table('educations')->insert([
-            'name' => 'D1',
-            'power' => '31',
-        ]);
-
-        DB::table('educations')->insert([
-            'name' => 'D2',
-            'power' => '32',
-        ]);
-
-        DB::table('educations')->insert([
-            'name' => 'D3',
-            'power' => '33',
-        ]);
-
-        DB::table('educations')->insert([
-            'name' => 'D4',
-            'power' => '40',
-        ]);
-
-        DB::table('educations')->insert([
-            'name' => 'S1',
-            'power' => '40',
-        ]);
-
-        DB::table('educations')->insert([
-            'name' => 'S2',
-            'power' => '50',
+            ['name' => 'SD'],
+            ['name' => 'SMP'],
+            ['name' => 'SMA'],
+            ['name' => 'SMK'],
+            ['name' => 'D1'],
+            ['name' => 'D2'],
+            ['name' => 'D3'],
+            ['name' => 'D4'],
+            ['name' => 'S1'],
+            ['name' => 'S2']
         ]);
     }
 
