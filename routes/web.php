@@ -46,7 +46,7 @@ Route::post('/company/login', 'LogincompanyController@login');
 
 Route::middleware(['auth.jwt'])->group(function () {
     //User Routes
-    Route::get('/user/home', [UserController::class, 'home']);
+    Route::get('/user', [UserController::class, 'home']);
     Route::get('/user/logout', [LogoutController::class, 'user']);
     Route::get('/user/help', [UserController::class, 'help']);
 

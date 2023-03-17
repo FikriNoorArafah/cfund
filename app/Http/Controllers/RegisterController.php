@@ -109,12 +109,12 @@ class RegisterController extends Controller
             $userData['username'] = $username;
 
             $existingUser = User::where('email', $userData['email'])->first();
-            if ($existingUser && $existingUser->email_verified_at) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Email is not available'
-                ], 422);
-            }
+            // if ($existingUser && $existingUser->email_verified_at) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'Email is not available'
+            //     ], 422);
+            // }
 
             $user = $existingUser ? $existingUser->update($userData) : User::create($userData);
 

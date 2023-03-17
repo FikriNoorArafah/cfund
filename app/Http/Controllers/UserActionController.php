@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Participant;
 use App\Models\Task;
+use App\Models\UserPayment;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -112,6 +113,32 @@ class UserActionController extends Controller
         }
     }
 
+
+    public function paymentMethod(Request $request)
+    {
+        $user = Auth::user();
+        try {
+            $request->validate([
+                'type' => 'required',
+                'credit' => 'required'
+            ]);
+
+            $userPayment = UserPayment::updateOrCreate(
+                ['user_id' => $user->user_id],
+                ['type' => $request->type, 'credit_number' => $request->credit]
+            );
+            return response()->json([
+                'success' => true,
+                'message' => 'berhasil menyimpan data pembayaran',
+                'data' => $userPayment
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
 
     public function profileUpdate(Request $request)
     {

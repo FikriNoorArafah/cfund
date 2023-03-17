@@ -191,20 +191,14 @@ class UserController extends Controller
                 ->first();
 
             $history[] = [
-                'cv_url' => $participant->cv_url,
-                'schedule' => $participant->schedule,
-                'place' => $participant->place,
                 'status' => $participant->status,
-                'intern' => [
-                    'title' => $intern->majors->pluck('name')->first(),
-                    'url' => $intern->companies->url_icon,
-                    'company' => $intern->companies->name,
-                    'region' => $intern->companies->region,
-                    'city' => $intern->companies->city,
-                    'kategori' => $intern->interests->pluck('name')->first(),
-                    'education' => $intern->educations->pluck('name'),
-                    'level' => $intern->levels->pluck('name')->first(),
-                ],
+                'deskripsi' => $intern->description,
+                'title' => $intern->majors->pluck('name')->first(),
+                'url' => $intern->companies->url_icon,
+                'company' => $intern->companies->name,
+                'region' => $intern->companies->region,
+                'city' => $intern->companies->city,
+                'education' => $intern->educations->pluck('name'),
             ];
         }
 
@@ -234,20 +228,14 @@ class UserController extends Controller
                 ->first();
 
             $history[] = [
-                'cv_url' => $participant->cv_url,
-                'schedule' => $participant->schedule,
-                'place' => $participant->place,
                 'status' => $participant->status,
-                'intern' => [
-                    'title' => $intern->majors->pluck('name')->first(),
-                    'url' => $intern->companies->url_icon,
-                    'company' => $intern->companies->name,
-                    'region' => $intern->companies->region,
-                    'city' => $intern->companies->city,
-                    'kategori' => $intern->interests->pluck('name')->first(),
-                    'education' => $intern->educations->pluck('name'),
-                    'level' => $intern->levels->pluck('name')->first(),
-                ],
+                'deskripsi' => $intern->description,
+                'title' => $intern->majors->pluck('name')->first(),
+                'url' => $intern->companies->url_icon,
+                'company' => $intern->companies->name,
+                'region' => $intern->companies->region,
+                'city' => $intern->companies->city,
+                'education' => $intern->educations->pluck('name'),
             ];
         }
 
@@ -299,19 +287,14 @@ class UserController extends Controller
 
             $history[] = [
                 'participant_id' => $participant->participant_id,
-                'cv_url' => $participant->cv_url,
-                'schedule' => $participant->schedule,
-                'place' => $participant->place,
                 'status' => $participant->status,
-                'template' => $participant->contract_template_url,
-                'contract' => $participant->contract_url,
-                'intern' => [
-                    'title' => $intern->majors->pluck('name')->first(),
-                    'url' => $intern->companies->url_icon,
-                    'company' => $intern->companies->name,
-                    'region' => $intern->companies->region,
-                    'city' => $intern->companies->city,
-                ],
+                'deskripsi' => $intern->description,
+                'title' => $intern->majors->pluck('name')->first(),
+                'url' => $intern->companies->url_icon,
+                'company' => $intern->companies->name,
+                'region' => $intern->companies->region,
+                'city' => $intern->companies->city,
+                'education' => $intern->educations->pluck('name'),
                 'semesters' => $semesterData,
             ];
         }
