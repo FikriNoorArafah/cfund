@@ -21,7 +21,7 @@ class RegisterController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['otpUser', 'registerUser']]);
+        $this->middleware('auth:api', ['except' => ['otpUser', 'registerUser', 'registerCompany', 'otpCompany']]);
     }
 
     public function registerUser(RegisterRequest $request)
@@ -102,81 +102,77 @@ class RegisterController extends Controller
 
     public function registerCompany(RegisterRequest $request)
     {
-        $userData = $request->validated();
-        $username = Company::generateUsername($userData['name']);
-        $userData['username'] = $username;
-        $emailExist = Company::where('email', $userData['email'])->exists();
+        try {
+            $userData = $request->validated();
 
-        if ($emailExist) {
+            $username = Company::generateUsername($userData['name']);
+            $userData['username'] = $username;
+
+            $existingUser = Company::where('email', $userData['email'])->first();
+            // if ($existingUser && $existingUser->email_verified_at) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'Email is not available'
+            //     ], 422);
+            // }
+            if ($existingUser) {
+                $existingUser->update($userData);
+            } else {
+                $company = Company::create($userData);
+            }
+
+            $otp = random_int(100000, 999999);
+            $emailverify = EmailVerification::create([
+                'email' => $request->email,
+                'token' => Hash::make($otp),
+                'created_at' => now(),
+            ]);
+
+            Mail::to($request->email)->send(new EmailVerify($otp));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'OTP has been sent to your email!'
+            ]);
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Email sudah dipakai',
-            ], 422);
+                'message' => $e->getMessage()
+            ], 500);
         }
-
-        $telephoneExist = Company::where('telephone', $userData['telephone'])->exists();
-
-        if ($telephoneExist) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Telepon sudah dipakai',
-            ], 422);
-        }
-
-        $otp = random_int(100000, 999999);
-        $emailverify = new EmailVerification();
-        $emailverify->email = $request->email;
-        $emailverify->token = Hash::make($otp);
-        $emailverify->created_at = now();
-        $emailverify->save();
-
-        Mail::to($request->email)->send(new EmailVerify($otp));
-        return response()->json([
-            'success' => true,
-            'message' => 'OTP has been sent to your email!'
-        ]);
     }
+
     public function otpCompany(Request $request)
     {
-        $request->validate([
-            'otp' => 'required',
-            'email' => 'required|email',
-            'name' => 'required',
-            'telephone' => 'required',
-            'password' => 'required',
-        ]);
+        try {
+            $otp = EmailVerification::where('email', $request->email)
+                ->where('created_at', '>', Carbon::now()->subMinutes(5))
+                ->latest()
+                ->firstOrFail();
 
-        $otp = EmailVerification::where('email', $request->email)
-            ->where('created_at', '>', Carbon::now()->subMinutes(2))
-            ->latest()
-            ->first();
+            if (!Hash::check($request->otp, $otp->token)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid OTP'
+                ], 422);
+            }
 
-        if (!$otp || !Hash::check($request->otp, $otp->token)) {
+            $user = Company::where('email', $request->email)->first();
+            $user->email_verified_at = now();
+            $user->save();
+
+            $credentials = ['email' => $request->email, 'password' => $request->password];
+            $token = auth()->guard('company')->attempt($credentials);
+
+            return response()->json([
+                'success' => true,
+                'token' => $token
+            ]);
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid OTP'
+                'message' => 'Invalid email or OTP'
             ], 422);
         }
-
-        $username = Company::generateUsername($request->name);
-        $userData = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'telephone' => $request->telephone,
-            'password' => $request->password,
-            'username' => $username
-        ];
-        $companies = Company::create($userData);
-        Auth::login($companies);
-        $request->session()->regenerateToken();
-        $companies->remember_token = csrf_token();
-        $companies->save();
-
-        $token = csrf_token();
-        $request->session()->put('user_csrf_token', $token);
-        return response()->json([
-            'success' => true,
-            'token' => $token,
-        ]);
     }
 }

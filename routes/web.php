@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -32,9 +33,13 @@ Route::post('/login', [LoginController::class, 'loginUser']);
 Route::post('/company/login', [LoginController::class, 'loginCompany']);
 
 //lupapassword
-Route::post('/reset', 'ForgotPasswordController@sendResetLinkEmail');
-Route::post('/resetotp', 'ForgotPasswordController@otp');
-Route::post('/resetpassword', 'ForgotPasswordController@reset');
+Route::post('/reset', [ForgetController::class, 'sendEmailUser']);
+Route::post('/resetotp', [ForgetController::class, 'otpUser']);
+Route::post('/resetpassword', [ForgetController::class, 'resetUser']);
+
+Route::post('/company/reset', [ForgetController::class, 'sendEmailCompany']);
+Route::post('/company/resetotp', [ForgetController::class, 'otpCompany']);
+Route::post('/company/resetpassword', [ForgetController::class, 'resetCompany']);
 
 //Guest Routes
 Route::get('/', [GuestController::class, 'welcome'])->name('login');

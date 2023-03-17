@@ -26,13 +26,13 @@ class UserController extends Controller
             ->map(function ($intern) {
                 return [
                     'id' => $intern->intern_id,
-                    'title' => $intern->majors->pluck('name'),
+                    'title' => $intern->majors->pluck('name')->implode(', '),
                     'url' => $intern->companies->url_icon,
                     'company' => $intern->companies->name,
                     'region' => $intern->companies->region,
                     'city' => $intern->companies->city,
                     'education' => $intern->educations->pluck('name'),
-                    'level' => $intern->levels->pluck('name'),
+                    'level' => $intern->levels->pluck('name')->implode(', '),
                 ];
             });
 
@@ -56,7 +56,7 @@ class UserController extends Controller
 
     public function program()
     {
-        $interns = Intern::with(['companies', 'majors', 'educations', 'levels'])
+        $interns = Intern::with(['companies', 'majors', 'educations', 'levels', 'departments'])
             ->get()
             ->map(function ($intern) {
                 return [
@@ -64,13 +64,14 @@ class UserController extends Controller
                     'desc' => $intern->description,
                     'skill' => $intern->skill,
                     'require' => $intern->require,
-                    'title' => $intern->majors->pluck('name'),
+                    'title' => $intern->majors->pluck('name')->implode(', '),
                     'url' => $intern->companies->url_icon,
                     'company' => $intern->companies->name,
                     'region' => $intern->companies->region,
                     'city' => $intern->companies->city,
                     'education' => $intern->educations->pluck('name'),
-                    'level' => $intern->levels->pluck('name'),
+                    'level' => $intern->levels->pluck('name')->implode(', '),
+                    'jurusan' => $intern->departments->pluck('name'),
                 ];
             });
 
@@ -80,13 +81,9 @@ class UserController extends Controller
             ->exists();
 
         $user = Auth::user();
-
-        $user = Auth::user();
-
         $user_payment = UserPayment::where('user_id', $user->id)->first();
 
         $lengkap = (!$user->region || !$user->city || !$user->postal || !$user->education || !$user_payment || !$user_payment->type || !$user_payment->credit_number);
-
         $regist = $hasSelectionOrAccepted ? false : true;
 
         return response()->json([
@@ -111,7 +108,7 @@ class UserController extends Controller
             $history[] = [
                 'status' => $participant->status,
                 'deskripsi' => $intern->description,
-                'title' => $intern->majors->pluck('name')->first(),
+                'title' => $intern->majors->pluck('name')->implode(', '),
                 'url' => $intern->companies->url_icon,
                 'company' => $intern->companies->name,
                 'region' => $intern->companies->region,
@@ -144,7 +141,7 @@ class UserController extends Controller
                 'place' => $participant->place,
                 'status' => $participant->status,
                 'deskripsi' => $intern->description,
-                'title' => $intern->majors->pluck('name')->first(),
+                'title' => $intern->majors->pluck('name')->implode(', '),
                 'url' => $intern->companies->url_icon,
                 'company' => $intern->companies->name,
                 'region' => $intern->companies->region,
@@ -175,7 +172,7 @@ class UserController extends Controller
             $history[] = [
                 'status' => $participant->status,
                 'deskripsi' => $intern->description,
-                'title' => $intern->majors->pluck('name')->first(),
+                'title' => $intern->majors->pluck('name')->implode(', '),
                 'url' => $intern->companies->url_icon,
                 'company' => $intern->companies->name,
                 'region' => $intern->companies->region,
@@ -206,7 +203,7 @@ class UserController extends Controller
             $history[] = [
                 'status' => $participant->status,
                 'deskripsi' => $intern->description,
-                'title' => $intern->majors->pluck('name')->first(),
+                'title' => $intern->majors->pluck('name')->implode(', '),
                 'url' => $intern->companies->url_icon,
                 'company' => $intern->companies->name,
                 'region' => $intern->companies->region,
@@ -259,7 +256,7 @@ class UserController extends Controller
                 'participant_id' => $participant->participant_id,
                 'status' => $participant->status,
                 'deskripsi' => $intern->description,
-                'title' => $intern->majors->pluck('name')->first(),
+                'title' => $intern->majors->pluck('name')->implode(', '),
                 'url' => $intern->companies->url_icon,
                 'company' => $intern->companies->name,
                 'region' => $intern->companies->region,
@@ -277,8 +274,24 @@ class UserController extends Controller
     public function profile(Request $request)
     {
         $user = Auth::user();
+        $payment = UserPayment::where('user_id', $user->user_id)->first();
+        $data = [
+            'user_id' => $user->user_id,
+            'name' => $user->name,
+            'second_name' => $user->second_name,
+            'email' => $user->email,
+            'telephone' => $user->telephone,
+            'username' => $user->username,
+            'url_icon' => $user->url_icon,
+            'region' => $user->region,
+            'city' => $user->city,
+            'postal' => $user->postal,
+            'education' => $user->education,
+            'payment' => $payment->type,
+            'credit_number' => $payment->credit_number,
+        ];
         return response()->json([
-            'user' => $user,
+            'user' => $data,
         ]);
     }
 }

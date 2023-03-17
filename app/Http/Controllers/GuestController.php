@@ -18,7 +18,7 @@ class GuestController extends Controller
     {
         $partners = Partner::select('name', 'url_icon')->take(8)->get();
 
-        $intern = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels', 'departments'])
+        $intern = Intern::with(['companies', 'majors', 'educations', 'levels', 'departments'])
             ->take(7)
             ->get();
 
