@@ -16,7 +16,6 @@ class CompanyActionController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
-                'second_name' => 'nullable',
                 'email' => [
                     'required',
                     Rule::unique('users')->ignore($companies),
@@ -28,7 +27,6 @@ class CompanyActionController extends Controller
                 'region' => 'nullable',
                 'city' => 'nullable',
                 'postal' => 'nullable',
-                'education' => 'nullable',
             ]);
         } catch (ValidationException $exception) {
             return response()->json([

@@ -35,8 +35,8 @@ class ProgramController extends Controller
 
         if ($interns->isEmpty()) {
             return response()->json([
-                'success' => true,
-                'message' => 'Kamu belum memilki program',
+                'interns' => [],
+                'message' => 'Kamu belum memiliki program',
             ]);
         }
 

@@ -9,17 +9,20 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class ParticipantController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $companies = Auth::guard('company')->user();
-        $participants = Participant::with('majors')
-            ->whereHas('interns', function ($query) use ($companies) {
-                $query->where('company_id', $companies->company_id);
-            })
-            ->where('status', 'selection')
-            ->get(['participant_id', 'user_id', 'schedule', 'place', 'status']);
-
-        return response()->json(['participant' => $participants]);
+        $participant = $participants = Participant::join('interns', 'interns.intern_id', '=', 'participants.intern_id')
+            ->join('users', 'users.user_id', '=', 'participants.user_id')
+            ->where('interns.company_id', '=', $companies->company_id)
+            ->where('participants.status', 'selection')
+            ->select('users.name', 'users.second_name', 'participants.*')
+            ->get();
+        $totalParticipants = $participant->count();
+        return response()([
+            'totalParticipant' => $totalParticipants,
+            'participant' => $participant,
+        ]);
     }
 
     public function update(Request $request)

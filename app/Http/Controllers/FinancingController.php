@@ -15,7 +15,7 @@ use Midtrans\Snap;
 
 class FinancingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $companies = Auth::guard('company')->user();
         $participant = Participant::join('interns', 'interns.intern_id', '=', 'participants.intern_id')
@@ -27,7 +27,6 @@ class FinancingController extends Controller
         $totalParticipants = $participant->count();
 
         return response()->json([
-            'company' => $companies,
             'totalParticipant' => $totalParticipants,
             'participant' => $participant,
         ]);

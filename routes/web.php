@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyActionController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\FinancingController;
 use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\LoginController;
@@ -97,9 +98,9 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('/company/participant/update', [ParticipantController::class, 'update']);
 
     //show financial particantp and editing
-    Route::get('/company/financing', 'FinancingController@index');
-    Route::post('/company/financing/detail', 'FinancingController@detail');
-    Route::post('/company/payment', 'FinancingController@payment');
+    Route::get('/company/financing', [FinancingController::class, 'index']);
+    Route::post('/company/financing/detail', [FinancingController::class, 'detail']);
+    Route::post('/company/payment', [FinancingController::class, 'payment']);
     //Route::post('/company/financing/update', 'FinancingController@update');
 
     //company profile editing
