@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Session;
 
 class LogoutController extends Controller
 {
-    public function user(Request $request)
+    public function logout(Request $request)
     {
         $user = Auth::user();
+
+        $request->session()->invalidate();
         $user->tokens()->delete();
 
         Session::flush();
@@ -22,10 +24,12 @@ class LogoutController extends Controller
         ]);
     }
 
-    public function company(Request $request)
+    public function company()
     {
         $companies = Auth::guard('company')->user();
-        $companies->tokens()->delete();
+        $companies->remember_token = null;
+        $companies->save();
+
         Session::flush();
         Auth::logout();
 

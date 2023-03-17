@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -16,16 +15,13 @@ class LoginController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login']]);
     }
-
     public function login(LoginRequest $request)
     {
         try {
             $credentials = $request->getCredentials();
+
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
-                $user->tokens()->delete();
-                Session::flush();
-                Auth::logout();
                 $request->session()->regenerateToken();
                 $token = auth()->attempt($credentials);
                 return response()->json([
@@ -43,11 +39,14 @@ class LoginController extends Controller
         }
     }
 
+
     public function company(LoginRequest $request)
     {
         try {
             $credentials = $request->getCredentials();
+
             if (auth()->guard('company')->attempt($credentials)) {
+                $companies = auth()->guard('company')->user();
                 $request->session()->regenerateToken();
                 $token = auth()->attempt($credentials);
                 return response()->json([
