@@ -36,7 +36,7 @@ class UserController extends Controller
                 ];
             });
 
-        $wts = Whattheysay::select('wts_id', 'name', 'position', 'quote')->take(4)->get();
+        $wts = Whattheysay::select('wts_id', 'name', 'position', 'quote')->get();
 
         return response()->json([
             'partner' => $partners,
@@ -287,9 +287,13 @@ class UserController extends Controller
             'city' => $user->city,
             'postal' => $user->postal,
             'education' => $user->education,
-            'payment' => $payment->type,
-            'credit_number' => $payment->credit_number,
+            'payment' => '',
+            'credit_number' => '',
         ];
+        if ($payment !== null) {
+            $data['payment'] = $payment->type;
+            $data['credit_number'] = $payment->credit_number;
+        }
         return response()->json([
             'user' => $data,
         ]);
