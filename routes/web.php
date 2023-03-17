@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyActionController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\GuestController;
@@ -100,6 +101,9 @@ Route::middleware(['auth.jwt'])->group(function () {
     //Route::post('/company/financing/update', 'FinancingController@update')->name('companyfinancing.update');
 
     //company profile editing
-    Route::get('/company/profile', 'CompanyProfileController@index')->name('company.profile');
-    Route::post('/company/profile/update', 'CompanyProfileController@update')->name('companyprofile.update');
+    Route::get('/company/profile', [CompanyController::class, 'profile']);
+
+    Route::post('/company/profile/update', [CompanyActionController::class, 'profileUpdate']);
+    Route::post('/company/avatar/upload', [UserActionController::class, 'updateAvatar']);
+    Route::post('/company/avatar/delete', [UserActionController::class, 'deleteAvatar']);
 });

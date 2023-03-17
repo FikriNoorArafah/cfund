@@ -18,31 +18,28 @@ class GuestController extends Controller
     {
         $partners = Partner::select('name', 'url_icon')->take(8)->get();
 
-        $intern = Intern::with(['companies', 'majors', 'educations', 'levels', 'departments'])
+        $interns = Intern::with(['companies', 'majors', 'educations', 'levels'])
             ->take(7)
-            ->get();
-
-        $data = [];
-        foreach ($intern as $program) {
-            $data[] = [
-                'id' => $intern->intern_id,
-                'title' => $program->majors->pluck('name')->first(),
-                'url' => $program->companies->url_icon,
-                'company' => $program->companies->name,
-                'region' => $program->companies->region,
-                'city' => $program->companies->city,
-                'education' => $program->educations->pluck('name'),
-                'department' => $program->departments->pluck('name')->first(),
-                'level' => $program->levels->pluck('name')->first(),
-            ];
-        }
+            ->get()
+            ->map(function ($intern) {
+                return [
+                    'id' => $intern->intern_id,
+                    'title' => $intern->majors->pluck('name')->implode(', '),
+                    'url' => $intern->companies->url_icon,
+                    'company' => $intern->companies->name,
+                    'region' => $intern->companies->region,
+                    'city' => $intern->companies->city,
+                    'education' => $intern->educations->pluck('name'),
+                    'level' => $intern->levels->pluck('name')->implode(', '),
+                ];
+            });
 
         $wts = Whattheysay::select('wts_id', 'name', 'position', 'quote')->take(3)->get();
 
         return response()->json([
             'partner' => $partners,
             'katamereka' => $wts,
-            'program' => $data,
+            'program' => $interns,
         ]);
     }
 
