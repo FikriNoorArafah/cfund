@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -21,6 +22,10 @@ class LoginController extends Controller
         try {
             $credentials = $request->getCredentials();
             if (Auth::attempt($credentials)) {
+                $user = Auth::user();
+                $user->tokens()->delete();
+                Session::flush();
+                Auth::logout();
                 $request->session()->regenerateToken();
                 $token = auth()->attempt($credentials);
                 return response()->json([

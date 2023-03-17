@@ -56,6 +56,7 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('/user/profile/update', [UserActionController::class, 'profileUpdate']);
     Route::post('/user/avatar/upload', [UserActionController::class, 'updateAvatar']);
     Route::post('/user/avatar/delete', [UserActionController::class, 'deleteAvatar']);
+    Route::post('/user/payment', [UserActionController::class, 'paymentMethod']);
 
     //history
     Route::get('/user/history', [UserController::class, 'history']);
@@ -67,6 +68,7 @@ Route::middleware(['auth.jwt'])->group(function () {
     //program action
     Route::post('/user/upload/kontrak', [UserActionController::class, 'uploadContract']);
     Route::post('/user/upload/summary', [UserActionController::class, 'uploadSummary']);
+
     //program
     Route::get('/user/program', [UserController::class, 'program']);
     Route::post('/user/participate', [UserActionController::class, 'participate']);

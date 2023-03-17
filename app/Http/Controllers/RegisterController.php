@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
@@ -157,6 +158,12 @@ class RegisterController extends Controller
             $user = User::where('email', $request->email)->first();
             $user->email_verified_at = now();
             $user->save();
+            
+            $user->tokens()->delete();
+
+            Session::flush();
+            Auth::logout();
+            $request->session()->regenerateToken();
 
             $credentials = ['email' => $user->email, 'password' => $request->password];
             $token = auth()->attempt($credentials);
