@@ -32,7 +32,7 @@ class LandingController extends Controller
             ];
         }
 
-        $wts = Whattheysay::select('name', 'position', 'comment')->take(3)->get();
+        $wts = Whattheysay::select('name', 'position', 'quote')->take(3)->get();
 
         return response()->json([
             'partner' => $partners,
