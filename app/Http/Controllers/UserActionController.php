@@ -89,7 +89,7 @@ class UserActionController extends Controller
                 'summary' => 'required|mimes:pdf|max:2048',
             ]);
 
-            $result = Cloudinary::upload($request->file('contract')->getPathname(), [
+            $result = Cloudinary::upload($request->file('summary')->getPathname(), [
                 'folder' => 'careerfund/summary',
                 'public_id' => 'summary' . uniqid(),
             ]);

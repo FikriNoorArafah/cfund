@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('position');
             $table->text('quote');
+            $table->text('icon_url');
             $table->timestamps();
         });
 
@@ -24,26 +25,25 @@ return new class extends Migration
                 'name' => 'John doe',
                 'position' => 'Google Front End Developer',
                 'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+                'icon_url' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046798/careerfund/user/male_portrait_profile_social_media_cv_young_elegant_suit-459413_bperfh.jpg',
             ],
             [
                 'name' => 'John doe',
                 'position' => 'Google Front End Developer',
                 'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+                'icon_url' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046798/careerfund/user/male_portrait_profile_social_media_cv_young_elegant_suit-459413_bperfh.jpg',
             ],
             [
                 'name' => 'John doe',
                 'position' => 'Google Front End Developer',
                 'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+                'icon_url' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046798/careerfund/user/male_portrait_profile_social_media_cv_young_elegant_suit-459413_bperfh.jpg',
             ],
             [
                 'name' => 'John doe',
                 'position' => 'Google Front End Developer',
                 'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
-            ],
-            [
-                'name' => 'John doe',
-                'position' => 'Google Front End Developer',
-                'quote' => 'Kamu akan bekerja dengan rekan-rekan yang membantumu bertumbuh & jadi versi terbaik diri. Semua orang bersemangat dalam bekerja & punya rasa kepemilikan yang tinggi.',
+                'icon_url' => 'https://res.cloudinary.com/dzv0ki3hh/image/upload/v1679046798/careerfund/user/male_portrait_profile_social_media_cv_young_elegant_suit-459413_bperfh.jpg',
             ]
         ]);
     }

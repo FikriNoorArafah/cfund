@@ -10,4 +10,9 @@ class UserPayment extends Model
     use HasFactory;
     protected $table = 'user_payments';
     protected $primaryKey = 'id_payment';
+
+    protected $fillable = [
+        'type',
+        'credit_number'
+    ];
 }

@@ -8,6 +8,7 @@ use App\Models\Participant;
 use App\Models\Partner;
 use App\Models\Semester;
 use App\Models\User;
+use App\Models\UserPayment;
 use App\Models\Whattheysay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,17 +25,18 @@ class UserController extends Controller
             ->get()
             ->map(function ($intern) {
                 return [
-                    'title' => $intern->majors->pluck('name')->first(),
+                    'id' => $intern->intern_id,
+                    'title' => $intern->majors->pluck('name'),
                     'url' => $intern->companies->url_icon,
                     'company' => $intern->companies->name,
                     'region' => $intern->companies->region,
                     'city' => $intern->companies->city,
                     'education' => $intern->educations->pluck('name'),
-                    'level' => $intern->levels->pluck('name')->first(),
+                    'level' => $intern->levels->pluck('name'),
                 ];
             });
 
-        $wts = Whattheysay::select('name', 'position', 'quote')->take(3)->get();
+        $wts = Whattheysay::select('name', 'position', 'quote')->take(4)->get();
 
         return response()->json([
             'partner' => $partners,
@@ -59,13 +61,16 @@ class UserController extends Controller
             ->map(function ($intern) {
                 return [
                     'id' => $intern->intern_id,
-                    'title' => $intern->majors->pluck('name')->first(),
+                    'desc' => $intern->description,
+                    'skill' => $intern->skill,
+                    'require' => $intern->require,
+                    'title' => $intern->majors->pluck('name'),
                     'url' => $intern->companies->url_icon,
                     'company' => $intern->companies->name,
                     'region' => $intern->companies->region,
                     'city' => $intern->companies->city,
                     'education' => $intern->educations->pluck('name'),
-                    'level' => $intern->levels->pluck('name')->first(),
+                    'level' => $intern->levels->pluck('name'),
                 ];
             });
 
@@ -74,10 +79,19 @@ class UserController extends Controller
             ->whereIn('status', ['selection', 'accepted'])
             ->exists();
 
+        $user = Auth::user();
+
+        $user = Auth::user();
+
+        $user_payment = UserPayment::where('user_id', $user->id)->first();
+
+        $lengkap = (!$user->region || !$user->city || !$user->postal || !$user->education || !$user_payment || !$user_payment->type || !$user_payment->credit_number);
+
         $regist = $hasSelectionOrAccepted ? false : true;
 
         return response()->json([
             'regist' => $regist,
+            'identity' => $lengkap,
             'interns' => $interns,
         ]);
     }
