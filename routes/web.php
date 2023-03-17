@@ -77,13 +77,15 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('/user/participate', [UserActionController::class, 'participate']);
 
     //Perusahaan Routes
-    //home
+
     Route::get('/company', [CompanyController::class, 'index']);
     Route::get('/company/logout', [LogoutController::class, 'company']);
 
-    //show program and editing
+    //program
     Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');
-    Route::post('/company/program/status', 'ProgramCompanyController@updateStatus')->name('companyprogram.status');
+
+    Route::post('/company/program/stop', 'ProgramCompanyController@updateStatus')->name('companyprogram.status');
+    Route::post('/company/program/start', 'ProgramCompanyController@updateStatus')->name('companyprogram.status');
     Route::post('/company/program/delete', 'ProgramCompanyController@delete')->name('companyprogram.delete');
     Route::post('/company/program/insert', 'ProgramCompanyController@insert')->name('companyprogram.participate');
 
