@@ -36,7 +36,7 @@ class GuestController extends Controller
             ];
         }
 
-        $wts = Whattheysay::select('name', 'position', 'quote')->take(3)->get();
+        $wts = Whattheysay::select('wts_id', 'name', 'position', 'quote')->take(3)->get();
 
         return response()->json([
             'partner' => $partners,

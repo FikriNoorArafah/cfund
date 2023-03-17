@@ -36,7 +36,7 @@ class UserController extends Controller
                 ];
             });
 
-        $wts = Whattheysay::select('name', 'position', 'quote')->take(4)->get();
+        $wts = Whattheysay::select('wts_id', 'name', 'position', 'quote')->take(4)->get();
 
         return response()->json([
             'partner' => $partners,
