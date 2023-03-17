@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $partners = Partner::select('name', 'url_icon')->take(8)->get();
         $user = Auth::user();
-        $interns = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels'])
+        $interns = Intern::with(['companies', 'majors', 'educations', 'levels'])
             ->take(7)
             ->get()
             ->map(function ($intern) {
@@ -29,7 +29,6 @@ class UserController extends Controller
                     'company' => $intern->companies->name,
                     'region' => $intern->companies->region,
                     'city' => $intern->companies->city,
-                    'kategori' => $intern->interests->pluck('name')->first(),
                     'education' => $intern->educations->pluck('name'),
                     'level' => $intern->levels->pluck('name')->first(),
                 ];
@@ -38,12 +37,6 @@ class UserController extends Controller
         $wts = Whattheysay::select('name', 'position', 'comment')->take(3)->get();
 
         return response()->json([
-            'user' => [
-                'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon,
-                'region' => $user->region,
-                'city' => $user->city,
-            ],
             'partner' => $partners,
             'katamereka' => $wts,
             'program' => $interns,
@@ -55,19 +48,13 @@ class UserController extends Controller
         $helps = Help::select('question', 'answer')->take(5)->get();
         $user = Auth::user();
         return response()->json([
-            'user' => [
-                'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon,
-                'region' => $user->region,
-                'city' => $user->city,
-            ],
             'helps' => $helps,
         ]);
     }
 
     public function program()
     {
-        $interns = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels'])
+        $interns = Intern::with(['companies', 'majors', 'educations', 'levels'])
             ->get()
             ->map(function ($intern) {
                 return [
@@ -77,7 +64,6 @@ class UserController extends Controller
                     'company' => $intern->companies->name,
                     'region' => $intern->companies->region,
                     'city' => $intern->companies->city,
-                    'kategori' => $intern->interests->pluck('name')->first(),
                     'education' => $intern->educations->pluck('name'),
                     'level' => $intern->levels->pluck('name')->first(),
                 ];
@@ -91,12 +77,6 @@ class UserController extends Controller
         $regist = $hasSelectionOrAccepted ? false : true;
 
         return response()->json([
-            'user' => [
-                'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon,
-                'region' => $user->region,
-                'city' => $user->city,
-            ],
             'regist' => $regist,
             'interns' => $interns,
         ]);
@@ -127,12 +107,6 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'user' => [
-                'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon,
-                'region' => $user->region,
-                'city' => $user->city,
-            ],
             'history' => $history,
         ]);
     }
@@ -147,7 +121,7 @@ class UserController extends Controller
         $history = [];
 
         foreach ($participants as $participant) {
-            $intern = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels'])
+            $intern = Intern::with(['companies', 'majors', 'educations', 'levels'])
                 ->where('interns.intern_id', $participant->intern_id)
                 ->first();
 
@@ -166,12 +140,6 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'user' => [
-                'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon,
-                'region' => $user->region,
-                'city' => $user->city,
-            ],
             'history' => $history,
         ]);
     }
@@ -186,7 +154,7 @@ class UserController extends Controller
         $history = [];
 
         foreach ($participants as $participant) {
-            $intern = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels'])
+            $intern = Intern::with(['companies', 'majors', 'educations', 'levels'])
                 ->where('interns.intern_id', $participant->intern_id)
                 ->first();
 
@@ -203,12 +171,6 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'user' => [
-                'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon,
-                'region' => $user->region,
-                'city' => $user->city,
-            ],
             'history' => $history,
         ]);
     }
@@ -223,7 +185,7 @@ class UserController extends Controller
         $history = [];
 
         foreach ($participants as $participant) {
-            $intern = Intern::with(['companies', 'majors', 'educations', 'interests', 'levels'])
+            $intern = Intern::with(['companies', 'majors', 'educations', 'levels'])
                 ->where('interns.intern_id', $participant->intern_id)
                 ->first();
 
@@ -240,12 +202,6 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'user' => [
-                'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon,
-                'region' => $user->region,
-                'city' => $user->city,
-            ],
             'history' => $history,
         ]);
     }
@@ -300,12 +256,6 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'user' => [
-                'name' => $user->name . ' ' . $user->second_name,
-                'url_icon' => $user->url_icon,
-                'region' => $user->region,
-                'city' => $user->city,
-            ],
             'history' => $history,
         ]);
     }
