@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Session;
 
 class LogoutController extends Controller
 {
-    public function logout(Request $request)
+    public function user(Request $request)
     {
         $user = Auth::user();
 
