@@ -82,12 +82,12 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/company/logout', [LogoutController::class, 'company']);
 
     //program
-    Route::get('/company/program', 'ProgramCompanyController@index')->name('company.program');
-
-    Route::post('/company/program/stop', 'ProgramCompanyController@updateStatus')->name('companyprogram.status');
-    Route::post('/company/program/start', 'ProgramCompanyController@updateStatus')->name('companyprogram.status');
-    Route::post('/company/program/delete', 'ProgramCompanyController@delete')->name('companyprogram.delete');
-    Route::post('/company/program/insert', 'ProgramCompanyController@insert')->name('companyprogram.participate');
+    Route::get('/company/program', [ProgramController::class, 'company']);
+    Route::patch('/company/update/{id}', [CompanyController::class, 'update']);
+    Route::post('/company/program/stop', [CompanyController::class, 'stop']);
+    Route::post('/company/program/start', [CompanyController::class, 'start']);
+    Route::post('/company/program/delete', [CompanyController::class, 'delete']);
+    Route::post('/company/program/insert', [CompanyController::class, 'insert']);
 
     //show participant and editing
     Route::get('/company/participant', 'ParticipantController@index')->name('company.participant');

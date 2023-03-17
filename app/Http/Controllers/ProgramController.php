@@ -2,67 +2,198 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Education;
+use App\Models\Intern;
+use App\Models\Level;
+use App\Models\Major;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Intern;
-use App\Models\Participant;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProgramController extends Controller
 {
-    public function program()
+    public function company()
     {
-        $intern = Intern::join('companies', 'interns.company_id', '=', 'companies.company_id')
-            ->join('intern_majors', 'interns.intern_id', '=', 'intern_majors.intern_id')
-            ->join('majors', 'intern_majors.major_id', '=', 'majors.major_id')
-            ->leftJoin('intern_educations', 'interns.intern_id', '=', 'intern_educations.intern_id')
-            ->leftJoin('educations', 'intern_educations.education_id', '=', 'educations.education_id')
-            ->select('interns.intern_id', 'companies.name as company', 'majors.name as major', 'educations.name as education', 'companies.region', 'companies.city', 'companies.url_icon')
-            ->take(7)
-            ->get();
+        $interns = Intern::with(['companies', 'majors', 'educations', 'levels', 'departments'])
+            ->get()
+            ->map(function ($intern) {
+                return [
+                    'id' => $intern->intern_id,
+                    'desc' => $intern->description,
+                    'skill' => json_decode($intern->skill),
+                    'require' => json_decode($intern->require),
+                    'title' => $intern->majors->pluck('name')->implode(', '),
+                    'url' => $intern->companies->url_icon,
+                    'company' => $intern->companies->name,
+                    'region' => $intern->companies->region,
+                    'city' => $intern->companies->city,
+                    'education' => $intern->educations->pluck('name'),
+                    'level' => $intern->levels->pluck('name')->implode(', '),
+                    'jurusan' => $intern->departments->pluck('name'),
+                ];
+            });
+        return response()->json([
+            'interns' => $interns,
+        ]);
+    }
+    public function insert(Request $request)
+    {
+        try {
+            $companies = Auth::guard('company')->user();
+            $request->validate([
+                'description' => 'nullable',
+                'skill' => 'nullable|array',
+                'level' => 'nullable|array',
+                'education' => 'nullable|array',
+                'major' => 'nullable',
+                'department' => 'nullable|array',
+                'require' => 'nullable'
+            ]);
 
-        $user = Auth::user();
+            $level = Level::firstOrCreate(['name' => $request->level]);
+            $major = Major::firstOrCreate(['name' => $request->major]);
 
-        $hasSelectionOrAccepted = Participant::where('user_id', $user->user_id)
-            ->where(function ($query) {
-                $query->where('status', 'selection')
-                    ->orWhere('status', 'accepted');
-            })
-            ->exists();
+            $departmentIds = Department::whereIn('name', $request->department)->pluck('department_id')->toArray();
+            $educationIds = Education::whereIn('name', $request->education)->pluck('education_id')->toArray();
 
-        $regist = $hasSelectionOrAccepted ? 'disable' : 'enable';
+            $intern = new Intern;
+            $intern->description = $request->description;
+            $intern->company_id = $companies->company_id;
+            $intern->status = 'Open';
+            $intern->skill = json_encode($request->skill);
+            $intern->require = json_encode($request->require);
+            $intern->save();
+
+            $intern->majors()->sync($major->major_id);
+            $intern->levels()->sync($level->level_id);
+            $intern->departments()->syncWithoutDetaching($departmentIds);
+            $intern->educations()->syncWithoutDetaching($educationIds);
+
+            return response()->json([
+                'message' => 'Data berhasil ditambahkan.',
+                'intern' => $intern,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menambahkan data.',
+                'error' => $e->getMessage(),
+            ], 422);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $companies = Auth::guard('company')->user();
+        $request->validate([
+            'description' => 'nullable',
+            'skill' => 'nullable|array',
+            'level' => 'nullable|array',
+            'education' => 'nullable|array',
+            'major' => 'nullable',
+            'department' => 'nullable',
+            'require' => 'nullable'
+        ]);
+
+        $level = Level::firstOrCreate(['name' => $request->level]);
+        $major = Major::firstOrCreate(['name' => $request->major]);
+
+        $departmentIds = Department::whereIn('name', $request->department)->pluck('department_id')->toArray();
+        $educationIds = Education::whereIn('name', $request->education)->pluck('education_id')->toArray();
+
+        $intern = Intern::find($id);
+
+        if (!$intern) {
+            return response()->json([
+                'message' => 'Data not found.',
+            ], 404);
+        }
+
+        if ($intern->company_id !== $companies->company_id) {
+            return response()->json([
+                'message' => 'Unauthorized action.',
+            ], 401);
+        }
+
+        $intern->description = $request->description;
+        $intern->skill = json_encode($request->skill);
+        $intern->require = json_decode($request->require);
+        $intern->save();
+
+        $intern->majors()->sync($major->major_id);
+        $intern->levels()->sync($level->level_id);
+        $intern->departments()->syncWithoutDetaching($departmentIds);
+        $intern->educations()->syncWithoutDetaching($educationIds);
 
         return response()->json([
-            'user' => $user,
-            'regist' => $regist,
-            'interns' => $intern,
+            'message' => 'Data berhasil diperbarui.',
+            'intern' => $intern,
         ]);
     }
 
-    public function participate(Request $request)
+    public function delete(Request $request)
     {
-        $user = Auth::user();
+        try {
+            $request->validate([
+                'intern_id' => 'required',
+            ]);
+            $intern = Intern::find($request->intern_id);
+            $intern->status = 'Deleted';
+            $intern->save();
 
-        $request->validate([
-            'intern_id' => 'required',
-            'cv' => 'required|mimes:pdf|max:2048',
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Intern status updated successfully',
+                'intern' => $intern,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
+    }
+    public function start(Request $request)
+    {
+        try {
+            $request->validate([
+                'intern_id' => 'required',
+            ]);
+            $intern = Intern::find($request->intern_id);
+            $intern->status = 'Deleted';
+            $intern->save();
 
-        $cv = $request->file('cv');
-        $result = Cloudinary::upload($cv->getPathname(), [
-            'resource_type' => 'raw',
-            'folder' => 'careerfund/cv',
-            'public_id' => uniqid(),
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Intern status updated successfully',
+                'intern' => $intern,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
+    }
+    public function stop(Request $request)
+    {
+        try {
+            $request->validate([
+                'intern_id' => 'required',
+            ]);
+            $intern = Intern::find($request->intern_id);
+            $intern->status = 'Deleted';
+            $intern->save();
 
-        $participant = new Participant();
-        $participant->intern_id = $request->intern_id;
-        $participant->user_id = $user->user_id;
-        $participant->cv_url = $result->getSecurePath();
-        $participant->save();
-
-        return response()->json([
-            'message' => 'Berhasil daftar intern',
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Intern status updated successfully',
+                'intern' => $intern,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
     }
 }

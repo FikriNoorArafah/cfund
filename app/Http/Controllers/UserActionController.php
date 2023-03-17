@@ -110,7 +110,6 @@ class UserActionController extends Controller
         }
     }
 
-
     public function paymentMethod(Request $request)
     {
         $user = Auth::user();
@@ -119,9 +118,8 @@ class UserActionController extends Controller
                 'type' => 'required',
                 'credit' => 'required'
             ]);
-
             $userPayment = UserPayment::updateOrCreate(
-                ['user_id' => $user->user_id],
+                ['user_id' => $request->user_id],
                 ['type' => $request->type, 'credit_number' => $request->credit]
             );
             return response()->json([
@@ -212,7 +210,7 @@ class UserActionController extends Controller
 
             Cloudinary::destroy($user->url_icon);
 
-            $user->url_icon = null;
+            $user->url_icon = "";
             $user->save();
 
             return response()->json([

@@ -62,8 +62,8 @@ class UserController extends Controller
                 return [
                     'id' => $intern->intern_id,
                     'desc' => $intern->description,
-                    'skill' => $intern->skill,
-                    'require' => $intern->require,
+                    'skill' => json_decode($intern->skill),
+                    'require' => json_decode($intern->require),
                     'title' => $intern->majors->pluck('name')->implode(', '),
                     'url' => $intern->companies->url_icon,
                     'company' => $intern->companies->name,

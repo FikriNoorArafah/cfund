@@ -25,6 +25,7 @@ class GuestController extends Controller
         $data = [];
         foreach ($intern as $program) {
             $data[] = [
+                'id' => $intern->intern_id,
                 'title' => $program->majors->pluck('name')->first(),
                 'url' => $program->companies->url_icon,
                 'company' => $program->companies->name,

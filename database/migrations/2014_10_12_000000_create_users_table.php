@@ -43,10 +43,6 @@ return new class extends Migration
             'education' => 'S1',
         ]);
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

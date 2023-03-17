@@ -44,15 +44,29 @@ class CompanyController extends Controller
         }
 
         return response()->json([
-            'company' => [
-                'name' => $companies->name,
-                'url_icon' => $companies->url_icon,
-                'region' => $companies->region,
-                'city' => $companies->city,
-            ],
             'totalPayment' => $totalAmount,
             'totalParticipant' => $totalParticipants,
             'program' => $data,
+        ]);
+    }
+
+    public function profile(Request $request)
+    {
+        $companies = Auth::guard('company')->user();
+        $data = [
+            'company_id' => $companies->company_id,
+            'name' => $companies->name,
+            'email' => $companies->email,
+            'telephone' => $companies->telephone,
+            'username' => $companies->username,
+            'url_icon' => $companies->url_icon,
+            'region' => $companies->region,
+            'city' => $companies->city,
+            'postal' => $companies->postal,
+        ];
+
+        return response()->json([
+            'user' => $data,
         ]);
     }
 }
