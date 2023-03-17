@@ -108,7 +108,7 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function registercompany(RegistercompanyRequest $request)
+    public function registercompany(RegisterRequest $request)
     {
         $userData = $request->validated();
         $username = Company::generateUsername($userData['name']);
